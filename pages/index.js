@@ -1,66 +1,76 @@
 import { useState } from "react"
 import styled from "styled-components"
 import { colors } from "constants"
+import Prismic from "prismic-javascript"
+import { Link, RichText, Date } from "prismic-reactjs"
 
-const Home = props => {
-  const [works, setSelected] = useState([
-    { name: "Dashboard", url: "https://dashboard.dreadful.design", selected: true },
-    { name: "Garden Maze", url: "https://maze.dreadful.design", selected: false },
-    { name: "Crossword Builder", url: "https://crossword.dreadful.design", selected: false },
-    { name: "State Matters", url: "https://www.statematters.org", selected: false }
-  ])
-  const selectedWork = works.find(w => w.selected)
+const Home = ({ document }) => {
+  const {
+    data: { hero, subtitle, works }
+  } = document
+  console.log(works)
+  const [selectedId, setSelectedId] = useState(works[0].work_link.id)
+  const selectedWork = works.find(w => w.work_link.id === selectedId)
   return (
     <Main>
       <Device>
-        <iframe src={selectedWork.url} frameBorder="0" />
+        <iframe src={Link.url(selectedWork.site_link)} frameBorder="0" />
       </Device>
       <Content>
         <h3>
           <Emoji code="\1F596" /> Hi there.
         </h3>
-        <h1>
-          I design experiences that are <del>un</del>forgettable.
-        </h1>
-        <h2>
-          Find me on <a href="https://dribbble.com/dreadful-design">Dribbble</a>,{" "}
-          <a href="https://github.com/pkrawc">Github</a> or{" "}
-          <a href="https://twitter.com/dreadful_ux">Twitter</a>.
-        </h2>
+        {RichText.render(hero)}
+        {RichText.render(subtitle)}
         <p className="title">Selected Work</p>
         <WorkList>
-          {works.map((work, i) => (
+          {works.map(work => (
             <WorkItem
-              key={i}
-              className={work.selected && "selected"}
-              onClick={e =>
-                setSelected(
-                  works.map((w, ci) =>
-                    ci === i ? { ...w, selected: true } : { ...w, selected: false }
-                  )
-                )
-              }>
-              {work.name}
+              key={work.work_link.id}
+              className={work.work_link.id === selectedId && "selected"}
+              onClick={e => setSelectedId(work.work_link.id)}>
+              {RichText.render(work.title)}
             </WorkItem>
           ))}
         </WorkList>
+        <p className="work-description">
+          {RichText.render(selectedWork.description, linkResolver)}
+        </p>
       </Content>
     </Main>
   )
 }
 
+function linkResolver(doc) {
+  // Define the url depending on the document type
+  if (doc.type === "work") {
+    return "/work/" + doc.uid
+  } else if (doc.type === "blog_post") {
+    return "/blog/" + doc.uid
+  }
+  // Default to homepage
+  return "/"
+}
+
 Home.getInitialProps = async () => {
-  return {}
+  try {
+    const api = await Prismic.api("https://dreadful.cdn.prismic.io/api/v2")
+    const document = await api.getSingle("homepage")
+    return { document }
+  } catch (err) {
+    return { error: err }
+  }
 }
 
 const Main = styled.main`
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-gap: 2rem;
+  grid-template-columns: auto 1fr;
+  grid-gap: 4rem;
   padding: 2rem;
-  background: ${colors.dark_blue};
   color: ${colors.grey_100};
   min-height: 100vh;
+  max-width: 100rem;
+  margin: 0 auto;
 `
 
 const Emoji = styled.span`
@@ -70,7 +80,6 @@ const Emoji = styled.span`
 `
 
 const Device = styled.div`
-  grid-column: span 12;
   width: 30rem;
   height: 60rem;
   background: ${colors.grey_100};
@@ -80,26 +89,32 @@ const Device = styled.div`
   justify-self: center;
   overflow: hidden;
   position: relative;
+  grid-column: span 2;
+  grid-row: 2;
   iframe {
     width: 100%;
     height: 100%;
   }
   @media (min-width: 60rem) {
-    grid-column: 1 / span 5;
-    grid-row: 1 / span 1;
+    grid-column: span 1;
+    grid-row: 1;
   }
 `
 
 const Content = styled.section`
   align-self: center;
-  grid-column: span 12;
-  grid-row: 1 / span 1;
+  grid-column: span 2;
+  h2 {
+    margin: 2rem 0;
+  }
+  em {
+    text-decoration: line-through;
+  }
   .title {
     color: ${colors.blue};
   }
   @media (min-width: 60rem) {
-    grid-column: span 7;
-    grid-row: span 1;
+    grid-column: span 1;
   }
 `
 

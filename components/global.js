@@ -13,10 +13,14 @@ export default createGlobalStyle`
     height: 100%;
     margin: 0;
     padding: 0;
+    background: ${colors.dark_blue};
   }
   body {
     font-size: 1.33rem;
     font-family: "Vesterbro", sans-serif;
+  }
+  h1, h2, h3, h4 {
+    margin: 0;
   }
   h1 {
     font-size: 4rem;
