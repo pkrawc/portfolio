@@ -10,3 +10,5 @@ export const colors = {
   grey_700: "#1B1832",
   grey_900: "#060324"
 }
+
+export const endpoint = "https://dreadful.cdn.prismic.io/api/v2"
