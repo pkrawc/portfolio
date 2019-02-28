@@ -13,6 +13,7 @@
   "dependencies": {
     "compression": "^1.7.3",
     "express": "^4.16.4",
+    "luxon": "^1.11.3",
     "next": "^8.0.3",
     "prismic-javascript": "^2.0.1",
     "prismic-reactjs": "^0.3.2",

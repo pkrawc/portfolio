@@ -13,11 +13,11 @@ export default createGlobalStyle`
     height: 100%;
     margin: 0;
     padding: 0;
-    background: ${colors.dark_blue};
   }
   body {
     font-size: 1.33rem;
     font-family: "Vesterbro", sans-serif;
+    background: ${colors.grey_100};
   }
   h1, h2, h3, h4 {
     margin: 0;
@@ -43,9 +43,15 @@ export default createGlobalStyle`
     text-decoration: none;
     font-weight: 700;
   }
+  .small {
+    font-size: 1.25rem;
+  }
   @media (min-width: 40rem) {
     body {
       font-size: 2rem;
+    }
+    .small {
+      font-size: 1.5rem;
     }
   }
   @font-face {
