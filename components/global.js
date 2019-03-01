@@ -19,7 +19,7 @@ export default createGlobalStyle`
     font-family: "Vesterbro", sans-serif;
     background: ${colors.grey_100};
   }
-  h1, h2, h3, h4 {
+  h1, h2, h3, h4, p {
     margin: 0;
   }
   h1 {

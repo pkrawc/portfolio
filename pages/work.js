@@ -44,7 +44,19 @@ const Page = styled.main`
     margin-top: 4rem;
     font-weight: 700;
   }
+  .small {
+    margin-top: 1.25rem;
+  }
   .write-up {
     font-weight: 300;
+    margin-top: 2.625rem;
+    h2,
+    h3,
+    h4 {
+      margin: 2rem 0 1rem;
+    }
+    p {
+      line-height: 1.5;
+    }
   }
 `
