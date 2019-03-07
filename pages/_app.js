@@ -1,6 +1,7 @@
 import React from "react"
 import { default as NextApp, Container } from "next/app"
 import Head from "next/head"
+import Router from "next/router"
 import GlobalStyles from "components/global"
 import ReactGA from "react-ga"
 
@@ -9,12 +10,16 @@ export default class App extends NextApp {
     return Component.getInitialProps ? { initialProps: await Component.getInitialProps(ctx) } : {}
   }
 
+  handleHistoryChange = url => {
+    ReactGA.pageview(url)
+  }
+
   componentDidMount() {
     if (!window.analytics) {
       ReactGA.initialize("UA-112946294-4")
       window.analytics = true
     }
-    ReactGA.pageview(window.location.pathname + window.location.search)
+    Router.events.on("beforeHistoryChange", this.handleHistoryChange)
   }
 
   render() {
