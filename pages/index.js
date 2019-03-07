@@ -117,8 +117,16 @@ const Content = styled.section`
   em {
     text-decoration: line-through;
   }
+  .title {
+    color: ${colors.blue};
+    margin-bottom: 0.75rem;
+  }
   .work-description {
     min-height: 6rem;
+    margin: 2rem 0;
+    p {
+      margin-bottom: 2rem;
+    }
   }
   .mdi-github-circle {
     margin-right: 2rem;
