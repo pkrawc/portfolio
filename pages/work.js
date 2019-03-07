@@ -1,20 +1,23 @@
 import Prismic from "prismic-javascript"
-import { Link, RichText, Date } from "prismic-reactjs"
-import { DateTime } from "luxon"
+import { RichText } from "prismic-reactjs"
 import styled from "styled-components"
 import { colors, endpoint } from "constants"
 import NextLink from "next/link"
 
 const Work = ({ doc }) => {
   const { data } = doc
-  console.log(doc)
+  const published = new Date(doc.first_publication_date).toLocaleDateString("en-US", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric"
+  })
   return (
     <Page>
       <NextLink href="/">
         <h3 className="site-title">Dreadful Design</h3>
       </NextLink>
       <h1 className="title">{RichText.asText(data.title)}</h1>
-      <p className="small">{DateTime.fromISO(doc.first_publication_date).toFormat("DD")}</p>
+      <p className="small">{published}</p>
       <section className="write-up">{RichText.render(data.write_up)}</section>
     </Page>
   )
