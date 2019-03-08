@@ -30,16 +30,20 @@ const Home = ({ document }) => {
                 key={work.work_link.id}
                 className={work.work_link.id === selectedId && "selected"}
                 onClick={e => setSelectedId(work.work_link.id)}>
-                {RichText.render(work.title)}
+                <a>{RichText.render(work.title)}</a>
               </WorkItem>
             ))}
           </WorkList>
           <section className="work-description">
             {RichText.render(selectedWork.description)}
-            <a href={Link.url(selectedWork.github_link)} className="mdi mdi-github-circle" />
-            <NextLink prefetch href={Link.url(selectedWork.work_link, linkResolver)}>
-              <a className="project-link">Write up</a>
-            </NextLink>
+            <div className="links">
+              <a href={Link.url(selectedWork.github_link)} className="mdi mdi-github-circle">
+                Source.
+              </a>
+              <NextLink prefetch href={Link.url(selectedWork.work_link, linkResolver)}>
+                <a className="mdi mdi-clipboard-text-outline">Process.</a>
+              </NextLink>
+            </div>
           </section>
         </Content>
       </div>
@@ -122,21 +126,21 @@ const Content = styled.section`
     margin-bottom: 0.75rem;
   }
   .work-description {
-    min-height: 6rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 12rem;
     margin: 2rem 0;
+    .links {
+      margin-top: auto;
+    }
     p {
       margin-bottom: 2rem;
     }
   }
-  .mdi-github-circle {
+  .mdi {
     margin-right: 2rem;
-  }
-  .project-link {
-    /* padding-bottom: 0.25rem; */
-    border-bottom: 4px solid ${colors.green};
-    transition: 200ms;
-    &:hover {
-      border-bottom: 1px solid ${colors.blue};
+    &:before {
+      margin-right: 0.5rem;
     }
   }
   @media (min-width: 60rem) {
@@ -158,7 +162,7 @@ const WorkItem = styled.li`
   &:not(:last-of-type) {
     margin-right: 2rem;
   }
-  &.selected {
+  &.selected a {
     color: ${colors.light_green};
   }
 `
