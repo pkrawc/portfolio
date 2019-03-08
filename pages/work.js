@@ -60,6 +60,7 @@ const Page = styled.main`
     }
     p {
       line-height: 1.5;
+      margin: 1rem 0;
     }
   }
 `
