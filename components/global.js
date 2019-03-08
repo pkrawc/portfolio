@@ -42,6 +42,10 @@ export default createGlobalStyle`
     color: ${colors.green};
     text-decoration: none;
     font-weight: 700;
+    transition: 200ms;
+    &:hover {
+      color: ${colors.light_green};
+    }
   }
   .small {
     font-size: 1.25rem;
