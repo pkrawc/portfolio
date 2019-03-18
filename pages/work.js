@@ -34,7 +34,7 @@ export default Work
 const Page = styled.main`
   margin: 0 auto;
   padding: 4rem 2rem;
-  max-width: 80rem;
+  max-width: 70rem;
   .site-title {
     color: ${colors.green};
     cursor: pointer;

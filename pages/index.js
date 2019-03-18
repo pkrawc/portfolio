@@ -4,6 +4,7 @@ import { colors, endpoint } from "constants"
 import Prismic from "prismic-javascript"
 import { Link, RichText } from "prismic-reactjs"
 import NextLink from "next/link"
+import { useSpring, animated } from "react-spring"
 
 const Home = ({ document }) => {
   const {
@@ -11,13 +12,32 @@ const Home = ({ document }) => {
   } = document
   const [selectedId, setSelectedId] = useState(works[0].work_link.id)
   const selectedWork = works.find(w => w.work_link.id === selectedId)
+  const deviceProps = useSpring({
+    opacity: 1,
+    transform: "translate3d(0,0,0) scale(1)",
+    from: { opacity: 0, transform: "translate3d(0,12px,0) scale(0.9)" },
+    delay: 400,
+    config: {
+      tension: 245,
+      friction: 20
+    }
+  })
+  const contentProps = useSpring({
+    opacity: 1,
+    transform: "translate3d(0,0,0) scale(1)",
+    from: { opacity: 0, transform: "translate3d(-24px,24px,0) scale(0.96)" },
+    config: {
+      tension: 245,
+      friction: 20
+    }
+  })
   return (
     <Main>
       <div className="container">
-        <Device>
+        <Device as={animated.div} style={deviceProps}>
           <iframe src={Link.url(selectedWork.site_link)} frameBorder="0" />
         </Device>
-        <Content>
+        <Content as={animated.section} style={contentProps}>
           <h3>
             <Emoji code="\1F596" /> Hi there.
           </h3>
