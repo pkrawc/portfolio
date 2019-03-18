@@ -15,9 +15,10 @@ export default createGlobalStyle`
     padding: 0;
   }
   body {
-    font-size: 1.33rem;
-    font-family: "Vesterbro", sans-serif;
+    font-size: 1.5rem;
+    font-family: 'Spectral', serif;
     background: ${colors.grey_100};
+    font-feature-settings: "kern", "liga", "clig", "calt";
   }
   h1, h2, h3, h4, p {
     margin: 0;
@@ -36,7 +37,7 @@ export default createGlobalStyle`
   }
   h4 {
     font-size: 2rem;
-    font-weight: 900;
+    font-weight: 800;
   }
   a {
     color: ${colors.green};
@@ -49,47 +50,5 @@ export default createGlobalStyle`
   }
   .small {
     font-size: 1.25rem;
-  }
-  @media (min-width: 40rem) {
-    body {
-      font-size: 2rem;
-    }
-    .small {
-      font-size: 1.5rem;
-    }
-  }
-  @font-face {
-    font-family: "Vesterbro";
-    src: url("/static/fonts/Vesterbro-Light.woff2") format("woff2");
-    font-weight: 300;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: "Vesterbro";
-    src: url("/static/fonts/Vesterbro-Regular.woff2") format("woff2");
-    font-weight: 400;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: "Vesterbro";
-    src: url("/static/fonts/Vesterbro-Medium.woff2") format("woff2");
-    font-weight: 500;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: "Vesterbro";
-    src: url("/static/fonts/Vesterbro-Bold.woff2") format("woff2");
-    font-weight: 700;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: "Vesterbro";
-    src: url("/static/fonts/Vesterbro-Extrabold.woff2") format("woff2");
-    font-weight: 900;
-    font-style: normal;
   }
 `
