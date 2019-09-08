@@ -1,36 +1,33 @@
 import { default as NextDoc, Head, Main, NextScript } from "next/document"
-import { ServerStyleSheet, StyleSheetManager } from "styled-components"
+import { ServerStyleSheet } from "styled-components"
+import { colors } from "constants"
 
 export default class Document extends NextDoc {
-  static getInitialProps({ renderPage }) {
+  static async getInitialProps(context) {
     const sheet = new ServerStyleSheet()
-    const page = renderPage(App => props => (
-      <StyleSheetManager sheet={sheet.instance}>
-        <App {...props} />
-      </StyleSheetManager>
-    ))
-    const styles = sheet.getStyleElement()
-    return { ...page, styles }
+    const originalRender = context.renderPage
+    try {
+      context.renderPage = () =>
+        originalRender({
+          enhanceApp: App => props => sheet.collectStyles(<App {...props} />)
+        })
+      const initialProps = await NextDoc.getInitialProps(context)
+      return {
+        ...initialProps,
+        styles: sheet.getStyleElement()
+      }
+    } finally {
+      sheet.seal()
+    }
   }
   render() {
     return (
       <html lang="en">
         <Head>
           <meta charSet="utf-8" />
-          <meta name="theme-color" content="#8ccbcd" />
+          <meta name="theme-color" content={colors.dark_blue} />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png" />
-          <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png" />
-          <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png" />
           {this.props.styles}
-          <link
-            href="https://fonts.googleapis.com/css?family=Spectral:300,400,700,800"
-            rel="stylesheet"
-          />
-          <link
-            rel="stylesheet"
-            href="https://cdn.materialdesignicons.com/3.4.93/css/materialdesignicons.min.css"
-          />
         </Head>
         <body>
           <Main />

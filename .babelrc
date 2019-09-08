@@ -6,10 +6,10 @@
       {
         "alias": {
           "components": "./components",
-          "constants": "./constants"
+          "constants": "./constants.js"
         }
       }
     ],
-    "styled-components"
+    ["styled-components", { "ssr": true }]
   ]
 }

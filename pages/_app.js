@@ -1,15 +1,11 @@
 import React from "react"
-import { default as NextApp, Container } from "next/app"
+import { default as NextApp } from "next/app"
 import Head from "next/head"
 import Router from "next/router"
-import GlobalStyles from "components/global"
+import Base from "components/base-styles"
 import ReactGA from "react-ga"
 
 export default class App extends NextApp {
-  static async getInitialProps({ Component, ctx }) {
-    return Component.getInitialProps ? { initialProps: await Component.getInitialProps(ctx) } : {}
-  }
-
   handleHistoryChange = url => {
     ReactGA.pageview(url)
   }
@@ -23,16 +19,13 @@ export default class App extends NextApp {
   }
 
   render() {
-    const { Component, initialProps } = this.props
+    const { Component, pageProps } = this.props
 
     return (
-      <Container>
-        <Head>
-          <title>Dreadful Design.</title>
-        </Head>
-        <GlobalStyles />
-        <Component {...initialProps} />
-      </Container>
+      <>
+        <Base />
+        <Component {...pageProps} />
+      </>
     )
   }
 }
