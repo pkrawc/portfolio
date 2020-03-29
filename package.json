@@ -15,7 +15,11 @@
   "author": "Patrick Krawczykowski <patrick@dreadful.design>",
   "license": "ISC",
   "dependencies": {
+    "@mdx-js/loader": "^1.5.8",
+    "@mdx-js/react": "^1.5.8",
+    "@next/mdx": "^9.3.2",
     "next": "^9.3.2",
+    "next-mdx-enhanced": "^2.4.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-ga": "^2.5.7",

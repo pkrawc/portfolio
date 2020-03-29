@@ -1,5 +1,42 @@
 import { createGlobalStyle } from "styled-components"
-import { colors } from "constants"
+
+const fontSizes = ["1.5rem", "2rem", "3rem", "4rem", "5rem", "6rem"]
+
+fontSizes.small = fontSizes[0]
+fontSizes.body = fontSizes[1]
+fontSizes.subtitle = fontSizes[2]
+fontSizes.title = fontSizes[3]
+fontSizes.headline = fontSizes[4]
+fontSizes.hero = fontSizes[5]
+
+const colors = {
+  light_green: "#cdffeb",
+  green: "#009f9d",
+  blue: "#07456f",
+  dark_blue: "#0f0a3c",
+
+  grey_100: "#FCFCFF",
+  grey_300: "#92909C",
+  grey_500: "#454356",
+  grey_700: "#1B1832",
+  grey_900: "#060324",
+}
+
+const lineHeights = [1.25, 1.5, 2]
+
+lineHeights.short = lineHeights[0]
+lineHeights.normal = lineHeights[1]
+lineHeights.long = lineHeights[2]
+
+export const theme = {
+  colors,
+  fonts: {
+    body: `"Spectral", serif`,
+  },
+  fontSizes,
+  lineHeights: [1.25, 1.334, 1.5],
+  space: [0, 8, 16, 24, 32, 40, 48, 56, 64, 72],
+}
 
 export default createGlobalStyle`
   * {
@@ -8,15 +45,14 @@ export default createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
   }
   :root {
-    font-size: 12px;
+    font-size: ${({ theme }) => theme.space[1]}px;
   }
-  html, body, div, span, applet, object, iframe,
+  html, body, div, span, object, iframe,
   h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-  a, abbr, acronym, address, big, cite, code,
+  a, abbr, address, big, cite, code,
   del, dfn, em, img, ins, kbd, q, s, samp,
-  small, strike, strong, sub, sup, tt, var,
-  b, u, i, center,
-  dl, dt, dd, ol, ul, li,
+  small, strong, sub, sup, var,
+  b, u, i, dl, dt, dd, ol, ul, li,
   fieldset, form, label, legend,
   table, caption, tbody, tfoot, thead, tr, th, td,
   article, aside, canvas, details, embed,
@@ -27,73 +63,40 @@ export default createGlobalStyle`
     padding: 0;
   }
   body {
-    font-size: 1.5rem;
-    line-height: 1.334;
-    font-family: 'Spectral', serif;
-    background: ${colors.grey_100};
-    color: ${colors.grey_900};
+    font-size: ${({ theme }) => theme.fontSizes.body};
+    line-height: ${({ theme }) => theme.lineHeights.normal};
+    font-family: ${({ theme }) => theme.fonts.body};
+    background: ${({ theme }) => theme.colors.grey_100};
+    color: ${({ theme }) => theme.colors.grey_900};
     font-feature-settings: "kern", "liga", "clig", "calt";
   }
   h1, h2, h3, h4, h5 {
-    line-height: 1.5;
+    line-height: ${({ theme }) => theme.lineHeights.short};
   }
   h1 {
-    font-size: 4rem;
+    font-size: ${({ theme }) => theme.fontSizes.hero};
   }
   h2 {
-    font-size: 3rem;
+    font-size: ${({ theme }) => theme.fontSizes.headline};
   }
   h3 {
-    font-size: 2.5rem;
+    font-size: ${({ theme }) => theme.fontSizes.title};
     font-weight: 400;
   }
   h4 {
-    font-size: 2rem;
+    font-size: ${({ theme }) => theme.fontSizes.subtitle};
     font-weight: 800;
   }
   a {
-    color: ${colors.green};
+    color: ${({ theme }) => theme.colors.green};
     text-decoration: none;
     font-weight: 700;
     transition: 200ms;
     &:hover {
-      color: ${colors.light_green};
+      color: ${({ theme }) => theme.colors.light_green};
     }
   }
   .small {
-    font-size: 1.25rem;
-  }
-  .blog-container {
-    margin: 6rem auto 4rem;
-    padding: 0 2rem;
-    max-width: 84rem;
-    h1 {
-      margin-top: 4rem;
-      margin-bottom: 2rem;
-    }
-    h2 {
-      margin-top: 3rem;
-      margin-bottom: 2rem;
-    }
-    h3 {
-      margin-top: 2rem;
-      margin-bottom: 2rem;
-    }
-    h4 {
-      margin-top: 2rem;
-      margin-bottom: 1rem;
-    }
-    h5 {
-      margin-top: 2rem;
-    }
-    pre {
-      margin: 2rem 0;
-      border-radius: 4px;
-      padding: 2rem;
-    }
-    code {
-      font-size: 1.5rem;
-      font-family: "IBM Plex Mono", monospace;
-    }
+    font-size: ${({ theme }) => theme.fontSizes.small};
   }
 `

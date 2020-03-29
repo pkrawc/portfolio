@@ -1,31 +1,23 @@
-import React from "react"
-import { default as NextApp } from "next/app"
-import Head from "next/head"
-import Router from "next/router"
-import Base from "components/base-styles"
-import ReactGA from "react-ga"
+import React, { useEffect } from "react"
+import { useRouter } from "next/router"
+import Base, { theme } from "components/base-styles"
+import analytics from "react-ga"
+import { ThemeProvider } from "styled-components"
 
-export default class App extends NextApp {
-  handleHistoryChange = url => {
-    ReactGA.pageview(url)
+export default function App({ Component, pageProps }) {
+  const router = useRouter()
+  function handleHistoryChange(url) {
+    analytics.pageview(url)
   }
-
-  componentDidMount() {
-    if (!window.analytics) {
-      ReactGA.initialize("UA-112946294-4")
-      window.analytics = true
-    }
-    Router.events.on("beforeHistoryChange", this.handleHistoryChange)
-  }
-
-  render() {
-    const { Component, pageProps } = this.props
-
-    return (
-      <>
-        <Base />
-        <Component {...pageProps} />
-      </>
-    )
-  }
+  useEffect(() => {
+    if (!window.analyticsMounted) analytics.initialize("UA-112946294-4")
+    window.analyticsMounted = true
+    router.events.on("beforeHistoryChange", handleHistoryChange)
+  }, [])
+  return (
+    <ThemeProvider theme={theme}>
+      <Base />
+      <Component {...pageProps} />
+    </ThemeProvider>
+  )
 }
