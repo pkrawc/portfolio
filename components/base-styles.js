@@ -63,4 +63,37 @@ export default createGlobalStyle`
   .small {
     font-size: 1.25rem;
   }
+  .blog-container {
+    margin: 6rem auto 4rem;
+    padding: 0 2rem;
+    max-width: 84rem;
+    h1 {
+      margin-top: 4rem;
+      margin-bottom: 2rem;
+    }
+    h2 {
+      margin-top: 3rem;
+      margin-bottom: 2rem;
+    }
+    h3 {
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+    }
+    h4 {
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+    h5 {
+      margin-top: 2rem;
+    }
+    pre {
+      margin: 2rem 0;
+      border-radius: 4px;
+      padding: 2rem;
+    }
+    code {
+      font-size: 1.5rem;
+      font-family: "IBM Plex Mono", monospace;
+    }
+  }
 `

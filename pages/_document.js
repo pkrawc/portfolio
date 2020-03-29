@@ -28,6 +28,7 @@ export default class Document extends NextDoc {
           <meta name="theme-color" content={colors.dark_blue} />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           {this.props.styles}
+          <link rel="stylesheet" href="/theme.css" />
         </Head>
         <body>
           <Main />
