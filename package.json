@@ -1,29 +1,39 @@
 {
   "name": "dreadful_portfolio",
-  "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
+  "private": true,
   "scripts": {
-    "start:dev": "next",
+    "develop": "next",
     "build": "next build",
     "start": "next start"
+  },
+  "prettier": {
+    "semi": false,
+    "printWidth": 80,
+    "singleQuote": false,
+    "tabWidth": 2
   },
   "author": "Patrick Krawczykowski <patrick@dreadful.design>",
   "license": "ISC",
   "dependencies": {
-    "lil-grid": "^2.0.3",
-    "next": "^9.0.5",
-    "prismic-javascript": "^2.0.1",
-    "prismic-reactjs": "^0.3.2",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
-    "react-feather": "^2.0.3",
+    "@mdx-js/loader": "^1.5.8",
+    "@mdx-js/react": "^1.5.8",
+    "@next/mdx": "^9.3.2",
+    "mdx-prism": "^0.3.1",
+    "next": "^9.3.2",
+    "next-mdx-enhanced": "^2.4.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "react-ga": "^2.5.7",
     "react-spring": "^8.0.15",
-    "styled-components": "^4.3.2"
+    "reading-time": "^1.2.0",
+    "rehype": "^9.0.1",
+    "styled-components": "^5.0.1",
+    "styled-system": "^5.1.5"
   },
   "devDependencies": {
-    "babel-plugin-module-resolver": "^3.2.0",
-    "babel-plugin-styled-components": "^1.10.0"
+    "babel-plugin-import-glob-array": "^0.2.0",
+    "babel-plugin-module-resolver": "^4.0.0",
+    "babel-plugin-styled-components": "^1.10.0",
+    "prettier": "^2.0.2"
   }
 }

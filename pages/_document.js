@@ -1,6 +1,5 @@
 import { default as NextDoc, Head, Main, NextScript } from "next/document"
 import { ServerStyleSheet } from "styled-components"
-import { colors } from "constants"
 
 export default class Document extends NextDoc {
   static async getInitialProps(context) {
@@ -9,12 +8,13 @@ export default class Document extends NextDoc {
     try {
       context.renderPage = () =>
         originalRender({
-          enhanceApp: App => props => sheet.collectStyles(<App {...props} />)
+          enhanceApp: (App) => (props) =>
+            sheet.collectStyles(<App {...props} />),
         })
       const initialProps = await NextDoc.getInitialProps(context)
       return {
         ...initialProps,
-        styles: sheet.getStyleElement()
+        styles: sheet.getStyleElement(),
       }
     } finally {
       sheet.seal()
@@ -25,9 +25,14 @@ export default class Document extends NextDoc {
       <html lang="en">
         <Head>
           <meta charSet="utf-8" />
-          <meta name="theme-color" content={colors.dark_blue} />
+          <meta name="theme-color" content="#07456f" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           {this.props.styles}
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@200..900&display=swap"
+          />
+          <link rel="stylesheet" href="/styles/material-ocean-theme.css" />
         </Head>
         <body>
           <Main />

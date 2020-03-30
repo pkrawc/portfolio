@@ -1,133 +1,107 @@
 import { useState } from "react"
 import styled from "styled-components"
-import { colors } from "constants"
-import Head from "next/head"
 import Link from "next/link"
 import Container from "components/container"
-import { GitHub, FileText } from "react-feather"
+import Box from "components/box"
+import Stack from "components/stack"
+import { Text, Heading } from "components/typography"
+import { frontMatter as posts } from "./blog/**/*.mdx"
+import { frontMatter as projects } from "./projects/**/*.mdx"
 
-const StyledHome = styled.main`
-  background: ${colors.dark_blue};
-  color: ${colors.grey_100};
-  .hero__container {
+function formatPath(path) {
+  return path.replace(/\.mdx$/, "")
+}
+
+const HomeWrapper = styled.main`
+  margin-bottom: 8rem;
+  .hero {
     display: grid;
-    grid-template-columns: 1fr;
-    grid-gap: 2rem;
+    margin-top: 4rem;
+    min-height: 50vh;
     align-items: center;
-    justify-items: center;
-    min-height: calc(100vh);
-    @media (min-width: 40rem) {
-      grid-template-columns: auto auto;
-    }
-  }
-  .hero__copy {
-    position: relative;
-    h4 {
-      margin-top: 4rem;
-      color: ${colors.green};
-    }
-    .work__list {
-      list-style: none;
-      display: flex;
-      margin-bottom: 2rem;
-      li:not(:last-of-type) {
-        margin-right: 2rem;
-      }
-      h3 {
-        color: ${colors.grey_500};
-        cursor: pointer;
-        &:hover {
-          color: ${colors.green};
-        }
-      }
-      h3.selected {
-        color: ${colors.grey_100};
-      }
-    }
-    .work__link {
-      display: inline-flex;
-      align-items: center;
-      svg {
-        margin-right: 1rem;
-      }
-    }
-    .github {
-      margin-right: 2rem;
-    }
+    grid-template-columns: 20rem auto;
+    gap: 4rem;
   }
 `
 
-const Device = styled.iframe`
-  border-radius: 1rem;
-  background: ${colors.grey_100};
-  border: none;
-  width: 30rem;
-  height: 55rem;
-  display: none;
-  @media (min-width: 40rem) {
-    display: initial;
+const PreviewDevice = styled(Box)``
+
+const PostList = styled.ul`
+  list-style: none;
+`
+
+const Post = styled(Box)`
+  cursor: pointer;
+  transition: 100ms;
+  border-radius: 0.25rem;
+  &:hover {
+    background: ${({ theme }) => theme.colors.green_100};
+    color: ${({ theme }) => theme.colors.green_900};
+  }
+  h3 {
+    margin-bottom: 1rem;
   }
 `
 
 export default function Home() {
-  const work = [
-    {
-      src: "https://transit.dreadful.design",
-      title: "Dispatch",
-      post: "/work/dispatch",
-      github: "https://github.com/pkrawc/transit"
-    },
-    {
-      src: "https://dashboard.dreadful.design",
-      title: "Coinlance",
-      post: "/work/coinlance",
-      github: "https://github.com/pkrawc/coinlance"
-    }
-  ]
-  const [selectedIdx, setSelectedIdx] = useState(0)
+  const [active, setActive] = useState(0)
   return (
-    <StyledHome>
-      <Head>
-        <title>Dreadful Design</title>
-      </Head>
-      <Container className="hero__container">
-        <Device src={work[selectedIdx].src} />
-        <section className="hero__copy">
-          <h2>Dreadful Design</h2>
-          <h1>
-            I build experiences that are <span style={{ opacity: 0.24 }}>un</span>
-            forgettable
-          </h1>
-          <p>
-            Find me on <a href="https://dribbble.com/dreadful-design">Dribble</a>,{" "}
-            <a href="https://github.com/pkrawc">Github</a>, or{" "}
-            <a href="https://twitter.com/dreadful_ux">Twitter</a>.
-          </p>
-          <h4>Select Work</h4>
-          <ul className="work__list">
-            {work.map((item, idx) => (
-              <li>
-                <h3
-                  className={idx === selectedIdx && "selected"}
-                  onClick={e => setSelectedIdx(idx)}
-                >
-                  {item.title}
-                </h3>
-              </li>
+    <HomeWrapper>
+      <Container className="hero">
+        <PreviewDevice
+          as="iframe"
+          frameBorder="0"
+          gridColumn={["span 2", "span 2", "span 1"]}
+          borderRadius="1rem"
+          width="100%"
+          height="80vh"
+          src={projects[active].url}
+        />
+        <Box
+          gridColumn={["span 2", "span 2", "span 1"]}
+          gridRow={[1, 1, "auto"]}
+        >
+          <Heading as="h1" fontSize="hero">
+            Dreadful Design
+          </Heading>
+          <Heading fontSize="title" mt="1rem">
+            I build experiences that are <strike>un</strike>forgettable.
+          </Heading>
+          <Stack gridAutoFlow="column">
+            {projects.map((project) => (
+              <Box mt="2rem" key={project.__resourcePath}>
+                <Heading as="h4" fontSize="2rem">
+                  {project.title}
+                </Heading>
+                <Text>{project.description}</Text>
+              </Box>
             ))}
-          </ul>
-          <Link href={work[selectedIdx].github}>
-            <a className="work__link github">
-              <GitHub /> Github
-            </a>
-          </Link>
-          <Link href={work[selectedIdx].post}>
-            <a className="work__link casestudy">
-              <FileText /> Case Study
-            </a>
-          </Link>
-        </section>
+          </Stack>
+        </Box>
       </Container>
-    </StyledHome>
+      <Container mt="4rem">
+        <Heading as="h4" mb="2rem" fontSize="subtitle">
+          Articles
+        </Heading>
+        <Stack as="ul" css="list-style: none;">
+          {posts.map((page) => (
+            <Link
+              key={page.__resourcePath}
+              href={formatPath(page.__resourcePath)}
+            >
+              <Post as="li" mx="-2rem" p="2rem">
+                <Stack>
+                  <Heading as="h4" fontSize="title">
+                    {page.title}
+                  </Heading>
+                  <Text>{page.summary}</Text>
+                  <Text>{page.readingTime.text}</Text>
+                </Stack>
+              </Post>
+            </Link>
+          ))}
+        </Stack>
+      </Container>
+    </HomeWrapper>
   )
 }

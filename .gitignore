@@ -1,4 +1,9 @@
+# System Files
 .DS_Store
+
+# Package Manager
 node_modules
+
+# Build Files
 .next
-dist
+.mdx-data
