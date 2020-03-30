@@ -1,6 +1,6 @@
 import { createGlobalStyle } from "styled-components"
 
-const fontSizes = ["1.5rem", "2rem", "3rem", "4rem", "5rem", "6rem"]
+const fontSizes = ["1rem", "1.5rem", "2rem", "3rem", "4rem", "5rem"]
 
 fontSizes.small = fontSizes[0]
 fontSizes.body = fontSizes[1]
@@ -10,16 +10,33 @@ fontSizes.headline = fontSizes[4]
 fontSizes.hero = fontSizes[5]
 
 const colors = {
-  light_green: "#cdffeb",
-  green: "#009f9d",
-  blue: "#07456f",
-  dark_blue: "#0f0a3c",
+  blue_100: "#DFEBF2",
+  blue_300: "#93BCD7",
+  blue_500: "#5392BC",
+  blue_700: "#07456F",
+  blue_900: "#232D33",
 
-  grey_100: "#FCFCFF",
-  grey_300: "#92909C",
-  grey_500: "#454356",
-  grey_700: "#1B1832",
-  grey_900: "#060324",
+  green_100: "#f2ffff",
+  green_300: "#b4eceb",
+  green_500: "#7ddad8",
+  green_700: "#009f9d",
+  green_900: "#066663",
+
+  ui_100: "#FCFFFE",
+  ui_300: "#E4E6E5",
+  ui_500: "#CBCDCD",
+  ui_700: "#4E4F4F",
+  ui_900: "#191A19",
+}
+
+colors.modes = {
+  dark: {
+    font: colors.ui_100,
+    secondaryFont: colors.blue_300,
+    background: colors.blue_900,
+    primary: colors.green_500,
+    secondary: colors.blue_500,
+  },
 }
 
 const lineHeights = [1.25, 1.5, 2]
@@ -28,24 +45,26 @@ lineHeights.short = lineHeights[0]
 lineHeights.normal = lineHeights[1]
 lineHeights.long = lineHeights[2]
 
+const breakPoints = ["40rem", "60rem", "80rem", "100rem", "120rem"]
+
 export const theme = {
+  breakPoints,
   colors,
   fonts: {
-    body: `"Spectral", serif`,
+    body: `"Crimson Pro", serif`,
+    code: `"Hack", monospace`,
   },
   fontSizes,
-  lineHeights: [1.25, 1.334, 1.5],
+  lineHeights: lineHeights,
   space: [0, 8, 16, 24, 32, 40, 48, 56, 64, 72],
 }
 
 export default createGlobalStyle`
   * {
     box-sizing: border-box;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
   }
   :root {
-    font-size: ${({ theme }) => theme.space[1]}px;
+    font-size: ${({ theme }) => theme.space[2]}px;
   }
   html, body, div, span, object, iframe,
   h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -66,8 +85,8 @@ export default createGlobalStyle`
     font-size: ${({ theme }) => theme.fontSizes.body};
     line-height: ${({ theme }) => theme.lineHeights.normal};
     font-family: ${({ theme }) => theme.fonts.body};
-    background: ${({ theme }) => theme.colors.grey_100};
-    color: ${({ theme }) => theme.colors.grey_900};
+    background: ${({ theme }) => theme.colors.ui_100};
+    color: ${({ theme }) => theme.colors.blue_900};
     font-feature-settings: "kern", "liga", "clig", "calt";
   }
   h1, h2, h3, h4, h5 {
@@ -88,12 +107,12 @@ export default createGlobalStyle`
     font-weight: 800;
   }
   a {
-    color: ${({ theme }) => theme.colors.green};
+    color: ${({ theme }) => theme.colors.green_700};
     text-decoration: none;
-    font-weight: 700;
-    transition: 200ms;
+    font-weight: 800;
+    transition: 100ms;
     &:hover {
-      color: ${({ theme }) => theme.colors.light_green};
+      color: ${({ theme }) => theme.colors.green_300};
     }
   }
   .small {

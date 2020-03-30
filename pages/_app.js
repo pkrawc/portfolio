@@ -1,8 +1,10 @@
 import React, { useEffect } from "react"
 import { useRouter } from "next/router"
-import Base, { theme } from "components/base-styles"
 import analytics from "react-ga"
 import { ThemeProvider } from "styled-components"
+import { MDXProvider } from "@mdx-js/react"
+import Base, { theme } from "components/base"
+import MDXComponents from "components/mdx"
 
 export default function App({ Component, pageProps }) {
   const router = useRouter()
@@ -16,8 +18,10 @@ export default function App({ Component, pageProps }) {
   }, [])
   return (
     <ThemeProvider theme={theme}>
-      <Base />
-      <Component {...pageProps} />
+      <MDXProvider components={MDXComponents}>
+        <Base />
+        <Component {...pageProps} />
+      </MDXProvider>
     </ThemeProvider>
   )
 }

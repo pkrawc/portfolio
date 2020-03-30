@@ -1,5 +1,94 @@
 ---
-title: Write a concierge slack bot with Node and Twilio
+title: A Concierge Slack Bot
+summary: In this guide you'll learn how to use node, express, and twilio's api to create a slack bot that can respond to the door buzzer of your home or office.
 ---
 
-# Ever get really bored?
+At Avail we're constantly getting visitors and there was only one phone number that could be connected to the downstairs buzzer. When the company was 4 people, this kind of thing was totally managable. As we grew however, needing Ryan to buzz people in even when he was out of office got old fast.
+
+I poked around online and figured out I could buy a twilio number for next to nothing, have the buzzer route guests there, and deal with them over slack. Here is the fruit of that labor, in hopes that you too can add one more project that your stuck maintaining.
+
+## Setup
+
+We're going to need ngrok (or another tunneling service that floats your boat). You can download it from [ngrok.com](https://ngrok.com) and you won't need anything more than the free tier for this tutorial. Once you have it installed we can move on, but exposing a port to the outside world is dead simple.
+
+```bash
+ngrok http 8080
+
+Tunnel Status                 online
+Version                       2.0/2.0
+Web Interface                 http://127.0.0.1:4040
+Forwarding                    http://92832de0.ngrok.io -> localhost:8080
+Forwarding                    https://92832de0.ngrok.io -> localhost:8080
+
+Connnections                  ttl     opn     rt1     rt5     p50     p90
+                              0       0       0.00    0.00    0.00    0.00
+```
+
+## Server
+
+We'll create a simple express server to handle the incoming twilio calls and send and receive slack messages. To do this we'll need a directory and some npm packages. I'll be using axios for requests with nice defaults and dotenv to keep our keys off the net.
+
+```bash
+npm init -y && npm i express body-parser twilio dotenv axios
+```
+
+Now that we have a space to work, lets create a server.
+
+```js
+require("dotenv").config()
+const http = require("http")
+const express = require("express")
+const server = express()
+const buzzer = require("./buzzer")
+
+const port = process.env.PORT || 8080
+
+server.use(express.json())
+server.use(express.urlencoded({ extended: true }))
+server.set("port", port)
+// We're namespacing this because why stop at a door buzzer?
+server.use("/buzzer", buzzer)
+
+http.createServer(server).listen(server.get("port"))
+```
+
+## Answering The Call
+
+We'll need to create a file called `buzzer.js`. At the top of it we'll want to instantiate our twilio client.
+
+```js{3,4}
+const twilio = require("twilio")
+
+const voiceResponse = new twilio.twiml.VoiceResponse({ voice: "alice" })
+```
+
+Once setup, twilio will send a post request to our server anytime someone rings the front door. We need to recieve that call, let them know that we're trying to flag a human down, and message a #channel on slack. Our webhook on slack will be `/buzzer/call`.
+
+```js
+function getCall(req, res) {
+  const { CallSid } = req.body
+  if (!CallSid) res.status(403).end()
+  // Greet guest
+  voiceResponse.say("Welcome to Avail. One minute.")
+  // Pause the phone call and continue on to message slack.
+  voiceResponse.pause({ length: 180 })
+  try {
+    // Ping the slack channel and ask for a response
+    await axios.post(
+      SLACK_URL,
+      JSON.stringify({
+        text: "<!everyone>, someone is at the door.",
+        attachments: [
+          // This is where you would define your slack button actions.
+        ]
+      })
+    )
+    voiceResponse.say({ voice: "alice" }, "No one was available. Please try again later.")
+  } catch (error) {
+    voiceResponse.say({ voice: "alice" }, "Something went wrong. Please try again.")
+  } finally {
+    res.type("text/xml").send(voiceResponse.toString())
+  }
+}
+router.post("/call", getCall)
+```

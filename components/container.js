@@ -1,9 +1,15 @@
 import styled from "styled-components"
+import { space, layout } from "styled-system"
 
-export default styled.section`
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 2rem;
-  padding-right: 2rem;
-  max-width: 94rem;
+const Container = styled.section`
+  ${space};
+  ${layout};
 `
+
+Container.defaultProps = {
+  maxWidth: "64rem",
+  px: "2rem",
+  mx: "auto",
+}
+
+export default Container
