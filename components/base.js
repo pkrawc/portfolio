@@ -1,4 +1,5 @@
 import { createGlobalStyle } from "styled-components"
+import { color } from "styled-system"
 
 const fontSizes = ["1rem", "1.5rem", "2rem", "3rem", "4rem", "5rem"]
 
@@ -31,11 +32,20 @@ const colors = {
 
 colors.modes = {
   dark: {
-    font: colors.ui_100,
+    font: colors.blue_100,
     secondaryFont: colors.blue_300,
     background: colors.blue_900,
     primary: colors.green_500,
+    primaryLight: colors.green_300,
     secondary: colors.blue_500,
+  },
+  light: {
+    font: colors.blue_900,
+    secondaryFont: colors.blue_700,
+    background: colors.ui_100,
+    primary: colors.green_500,
+    primaryLight: colors.green_300,
+    secondary: color.blue_500,
   },
 }
 
@@ -64,7 +74,7 @@ export default createGlobalStyle`
     box-sizing: border-box;
   }
   :root {
-    font-size: ${({ theme }) => theme.space[2]}px;
+    font-size: 16px;
   }
   html, body, div, span, object, iframe,
   h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -85,8 +95,8 @@ export default createGlobalStyle`
     font-size: ${({ theme }) => theme.fontSizes.body};
     line-height: ${({ theme }) => theme.lineHeights.normal};
     font-family: ${({ theme }) => theme.fonts.body};
-    background: ${({ theme }) => theme.colors.ui_100};
-    color: ${({ theme }) => theme.colors.blue_900};
+    background: ${({ theme }) => theme.colors.background};
+    color: ${({ theme }) => theme.colors.font};
     font-feature-settings: "kern", "liga", "clig", "calt";
   }
   h1, h2, h3, h4, h5 {
@@ -107,12 +117,12 @@ export default createGlobalStyle`
     font-weight: 800;
   }
   a {
-    color: ${({ theme }) => theme.colors.green_700};
+    color: ${({ theme }) => theme.colors.primary};
     text-decoration: none;
     font-weight: 800;
     transition: 100ms;
     &:hover {
-      color: ${({ theme }) => theme.colors.green_300};
+      color: ${({ theme }) => theme.colors.primaryLight};
     }
   }
   .small {

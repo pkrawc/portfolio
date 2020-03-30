@@ -4128,6 +4128,11 @@ mdast-util-to-hast@7.0.0:
     unist-util-position "^3.0.0"
     unist-util-visit "^2.0.0"
 
+mdi-react@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/mdi-react/-/mdi-react-7.0.0.tgz#efc3577ef302c9622adc72aa07ed62c8ace2283c"
+  integrity sha512-eCsnXO0W4kzPhSuQ3xeGKz4mAZuo0wmSwgoJYOp6LLFZZPWFOX3mjNthk+AXV2jLa6ajXjZeZ/IFrxHMyPQKSQ==
+
 mdurl@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/mdurl/-/mdurl-1.0.1.tgz#fe85b2ec75a59037f2adfec100fd6c601761152e"

@@ -18,6 +18,7 @@
     "@mdx-js/loader": "^1.5.8",
     "@mdx-js/react": "^1.5.8",
     "@next/mdx": "^9.3.2",
+    "mdi-react": "^7.0.0",
     "mdx-prism": "^0.3.1",
     "next": "^9.3.2",
     "next-mdx-enhanced": "^2.4.0",

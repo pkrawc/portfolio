@@ -10,19 +10,10 @@ const BlogContainer = styled(Container)`
   }
 `
 
-const Header = styled(Box).attrs({ as: "header" })`
-  display: flex;
-`
-
 export default (frontMatter) => {
   return ({ children: content }) => {
     return (
       <BlogContainer my="4rem">
-        <Header>
-          <Link href="/">
-            <a>Back</a>
-          </Link>
-        </Header>
         <Heading as="h1" fontSize="4rem" mb="2rem">
           {frontMatter.title}
         </Heading>
