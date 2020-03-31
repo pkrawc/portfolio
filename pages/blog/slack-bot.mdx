@@ -24,9 +24,9 @@ Connnections                  ttl     opn     rt1     rt5     p50     p90
                               0       0       0.00    0.00    0.00    0.00
 ```
 
-## Server
+## Serving It Up
 
-We'll create a simple express server to handle the incoming twilio calls and send and receive slack messages. To do this we'll need a directory and some npm packages. I'll be using axios for requests with nice defaults and dotenv to keep our keys off the net.
+We need to receive incoming calls from twilio and message our slack #channel. To do this, setup a simple express server with some body-parsing middleware.
 
 ```bash
 npm init -y && npm i express body-parser twilio dotenv axios
@@ -43,9 +43,10 @@ const buzzer = require("./buzzer")
 
 const port = process.env.PORT || 8080
 
+server.set("port", port)
+
 server.use(express.json())
 server.use(express.urlencoded({ extended: true }))
-server.set("port", port)
 // We're namespacing this because why stop at a door buzzer?
 server.use("/buzzer", buzzer)
 
@@ -56,39 +57,114 @@ http.createServer(server).listen(server.get("port"))
 
 We'll need to create a file called `buzzer.js`. At the top of it we'll want to instantiate our twilio client.
 
-```js{3,4}
+```js
 const twilio = require("twilio")
-
-const voiceResponse = new twilio.twiml.VoiceResponse({ voice: "alice" })
+const twilioClient = twilio(process.env.SID, process.env.AUTH_TOKEN)
+const VoiceResponse = twilio.twiml.VoiceResponse
 ```
 
-Once setup, twilio will send a post request to our server anytime someone rings the front door. We need to recieve that call, let them know that we're trying to flag a human down, and message a #channel on slack. Our webhook on slack will be `/buzzer/call`.
+Once setup, twilio will send a post request to our server anytime someone rings the front door. We need to recieve that call, let them know that we're trying to flag a human down, and message a #channel on slack. Our webhook on twilio will be `/buzzer/call`.
 
 ```js
-function getCall(req, res) {
-  const { CallSid } = req.body
+function answerCall({body: CallSid}, res) {
+  const twiml = new VoiceResponse({voice: "alice"})
+  // If no call id, return a bad request status.
   if (!CallSid) res.status(403).end()
   // Greet guest
-  voiceResponse.say("Welcome to Avail. One minute.")
+  twiml.say("Welcome to Avail. One minute.")
   // Pause the phone call and continue on to message slack.
-  voiceResponse.pause({ length: 180 })
+  twiml.pause({ length: 180 })
   try {
-    // Ping the slack channel and ask for a response
-    await axios.post(
-      SLACK_URL,
-      JSON.stringify({
-        text: "<!everyone>, someone is at the door.",
-        attachments: [
-          // This is where you would define your slack button actions.
-        ]
-      })
-    )
-    voiceResponse.say({ voice: "alice" }, "No one was available. Please try again later.")
+    // Ping the slack channel.
+    await messageSlack({id: CallSid})
+    twiml.say("No one was available. Please try again later.")
   } catch (error) {
-    voiceResponse.say({ voice: "alice" }, "Something went wrong. Please try again.")
+    twiml.say("Something went wrong. Please try again.")
   } finally {
-    res.type("text/xml").send(voiceResponse.toString())
+    res.type("text/xml").send(twiml.toString())
   }
 }
-router.post("/call", getCall)
+
+router.post("/call", answerCall)
 ```
+
+In the above we're just intercepting the call and calling `messageSlack` with the call id which is defined below.
+
+```js
+function messageSlack({ id }) {
+  const slackUrl = process.env.SLACK_WEB_HOOK
+  return axios.post(slackUrl, {
+    text: `<!everyone>, someone is at the door.`,
+    blocks: [
+      {
+        type: "actions",
+        block_id: id,
+        elements: [
+          {
+            type: "button",
+            text: { type: "plain_text", text: "Let Them In" },
+            value: "open",
+          },
+          {
+            type: "button",
+            text: { type: "plain_text", text: "Decline" },
+            value: "close",
+          },
+        ],
+      },
+    ],
+  })
+}
+```
+
+Once we've messaged slack now we wait for a reply. You can read up on [creating rich messages and incoming webhooks with slack](https://api.slack.com/). We'll also need to turn _interactivity_ on and set a resonable request url, I've chosen `/slack-response`. Slack will post the result of your slack teams action choice to this route, so we'll need to access it and take the right action.
+
+```js
+async function slackResponse(req, res) {
+  const {
+    payload: {
+      user: { name },
+      response_url,
+      actions: [{ block_id, value }],
+    },
+  } = JSON.parse(req.body)
+  const open = value === "open"
+  // This is async
+  twilioClient.calls(block_id).update({
+    url: `${ROOT_URL}/buzzer/${value}?url=${response_url}`,
+    method: "post",
+  })
+  res.status(200).json({
+    text: open ? `Okay ${name}, I'll let them in.` : `They shall not pass`,
+  })
+}
+
+router.post("/slack-response", slackResponse)
+```
+
+In the above we're parsing the response payload to build a reply and update our call downstairs to a new url that will finish the conversation and buzz the door if necessary.
+
+The last two items we need for this shin dig are a `/buzzer/open` & `/buzzer/close`
+
+```js
+function open(req, res) {
+  const twiml = new VoiceResponse({ voice: "alice" })
+  twiml.say("Come on up.")
+  // This might need to be switched up depending on your buzzer setup.
+  twiml.play({ digits: 9 })
+  res.type("text/xml").send(recording.toString())
+}
+
+function close(req, res) {
+  const recording = new VoiceResponse({ voice: "alice" })
+  recording.say("No one was available. Please try again later.")
+  res.type("text/xml").send(recording.toString())
+}
+
+router.post("/open", open)
+router.post("/close", close)
+```
+
+## Closing Thoughts
+
+There you have it. You'll want to test this setup locally with ngrok. Once you've got a server running, tunnel it to the web and use those urls as your slack and twilio webhook inputs.

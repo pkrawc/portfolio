@@ -7,6 +7,7 @@ import Stack from "components/stack"
 import { Text, Heading } from "components/typography"
 import { frontMatter as posts } from "./blog/**/*.mdx"
 import { frontMatter as projects } from "./projects/**/*.mdx"
+import ExternalLink from "mdi-react/OpenInNewIcon"
 
 function formatPath(path) {
   return path.replace(/\.mdx$/, "")
@@ -24,12 +25,6 @@ const HomeWrapper = styled.main`
   }
 `
 
-const PreviewDevice = styled(Box)``
-
-const PostList = styled.ul`
-  list-style: none;
-`
-
 const Post = styled(Box)`
   cursor: pointer;
   transition: 100ms;
@@ -45,19 +40,47 @@ const Post = styled(Box)`
   }
 `
 
+const ProjectWrapper = styled(Box)`
+  h4 {
+    cursor: pointer;
+    &:hover {
+      color: ${({ theme }) => theme.colors.font};
+    }
+  }
+`
+
+function Project({ project, idx, active, setActive }) {
+  return (
+    <ProjectWrapper mt="2rem" key={project.__resourcePath}>
+      <Heading
+        as="h4"
+        color={active ? "secondaryFont" : "ui_700"}
+        fontSize="2rem"
+        onClick={(e) => setActive(idx)}
+        css="display:flex;align-items:center"
+      >
+        <span>{project.title}</span>
+        <Link href={formatPath(project.__resourcePath)}>
+          <ExternalLink css="margin-left:0.5rem" />
+        </Link>
+      </Heading>
+    </ProjectWrapper>
+  )
+}
+
 export default function Home({ mode }) {
   const [activeIdx, setActive] = useState(0)
-  console.log(projects)
   return (
     <HomeWrapper>
       <Container className="hero">
-        <PreviewDevice
+        <Box
           as="iframe"
           frameBorder="0"
           gridColumn={["span 2", "span 2", "span 1"]}
           borderRadius="1rem"
           width="100%"
           height="80vh"
+          maxHeight="40rem"
           src={projects[activeIdx].url}
         />
         <Box
@@ -74,28 +97,23 @@ export default function Home({ mode }) {
             {projects.map((project, idx) => {
               const active = idx === activeIdx
               return (
-                <Box mt="2rem" key={project.__resourcePath}>
-                  <Heading
-                    as="h4"
-                    color={active ? "ui_700" : "ui_500"}
-                    fontSize="2rem"
-                  >
-                    {project.title}
-                  </Heading>
-                  <Link href={formatPath(project.__resourcePath)}>
-                    <Text as="a">Process</Text>
-                  </Link>
-                </Box>
+                <Project
+                  key={project.__resourcePath}
+                  project={project}
+                  idx={idx}
+                  active={active}
+                  setActive={setActive}
+                />
               )
             })}
           </Stack>
         </Box>
       </Container>
       <Container mt="4rem">
-        <Heading as="h4" mb="2rem" fontSize="subtitle">
-          Articles
-        </Heading>
         <Stack as="ul" css="list-style: none;">
+          <Heading as="h4" fontSize="subtitle">
+            Articles
+          </Heading>
           {posts.map((page) => (
             <Link
               key={page.__resourcePath}

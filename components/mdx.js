@@ -14,7 +14,7 @@ const Code = styled.code`
 
 export default {
   h1: (props) => <Heading as="h1" my={3} {...props} />,
-  h2: (props) => <Heading as="h2" my={2} {...props} />,
+  h2: (props) => <Heading as="h2" my={2} fontWeight="360" {...props} />,
   p: (props) => <Text mt={4} lineHeight="normal" {...props} />,
   inlineCode: (props) => <Code as="code" {...props} />,
   pre: (props) => <Box as="pre" my="2rem" display="block" {...props} />,
