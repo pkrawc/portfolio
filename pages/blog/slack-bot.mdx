@@ -4,13 +4,13 @@ summary: In this guide you'll learn how to use node, express, and twilio's api t
 publishedAt: 2020-03-30
 ---
 
-At Avail we're constantly getting visitors and there was only one phone number that could be connected to the downstairs buzzer. When the company was 4 people, this kind of thing was totally managable. As we grew however, needing Ryan to buzz people in even when he was out of office got old fast.
+At Avail, we're constantly entertaining visitors. Our office buzzer was connected to a phone number. When somone arrived at the office, they would buzz downstairs and the phone would get a call. This worked fine when we had four people at the company but as we grew having someone needing to buzz people in when they weren't in the office got annoying fast.
 
-I poked around online and figured out I could buy a twilio number for next to nothing, have the buzzer route guests there, and deal with them over slack. Here is the fruit of that labor, in hopes that you too can add one more project that your stuck maintaining.
+After doing some research, I found out you could buy a Twilio number for next to nothing, and hook it up to route the buzzer there. Once a guest is downstairs, Twilio will answer the call and allow you to interact programmatically. Our whole team is on Slack all day so notifying people there and letting employees use Slack's interactive messages to unlock the door and invite guests in seemed like a no-brainer.
 
 ## Setup
 
-We're going to need ngrok (or another tunneling service that floats your boat). You can download it from [ngrok.com](https://ngrok.com) and you won't need anything more than the free tier for this tutorial. Once you have it installed we can move on, but exposing a port to the outside world is dead simple.
+We're going to need ngrok—or any other tunneling service. You can download it from [ngrok.com](https://ngrok.com). You won't need anything more than the free tier for this tutorial. Once you have it installed we can move on, but exposing a port to the outside world is dead simple.
 
 ```bash
 ngrok http 8080
@@ -24,6 +24,18 @@ Forwarding                    https://92832de0.ngrok.io -> localhost:8080
 Connnections                  ttl     opn     rt1     rt5     p50     p90
                               0       0       0.00    0.00    0.00    0.00
 ```
+
+### Slack Web Hooks
+
+Slack has an _incoming webhooks_ feature that will allow you to post to a unique URL and send messages to a specific channel, this is not the way to go if you're wanting to build a slack app that could be installed by many teams and used across them, but that's not what we're doing so... yeah.
+
+You'll need to create an app at https://api.slack.com and setup a webhook into a channel that your team doesn't mind you posting a bunch of test messages to.
+
+### Twilio
+
+Generally, you'll need to setup a twilio number and add a webhook to your server when a call comes in.
+
+![Twilio Screen](/images/twilio-screen.png)
 
 ## Serving It Up
 

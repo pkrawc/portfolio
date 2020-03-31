@@ -13,9 +13,11 @@ const Code = styled.code`
 `
 
 export default {
-  h1: (props) => <Heading as="h1" my={3} {...props} />,
-  h2: (props) => <Heading as="h2" my={2} fontWeight="360" {...props} />,
-  p: (props) => <Text mt={4} lineHeight="normal" {...props} />,
-  inlineCode: (props) => <Code as="code" {...props} />,
-  pre: (props) => <Box as="pre" my="2rem" display="block" {...props} />,
+  h1: (props) => <Heading {...props} as="h1" my={3} />,
+  h2: (props) => <Heading {...props} as="h2" my={2} fontWeight="360" />,
+  h3: (props) => <Heading {...props} as="h3" mt={3} fontSize="2rem" />,
+  p: (props) => <Text {...props} mt={2} lineHeight="normal" />,
+  inlineCode: (props) => <Code {...props} as="code" />,
+  pre: (props) => <Box {...props} as="pre" my="2rem" display="block" />,
+  img: (props) => <img {...props} style={{ maxWidth: "100%" }} />,
 }
