@@ -8,10 +8,7 @@ import { Text, Heading } from "components/typography"
 import { frontMatter as posts } from "./blog/**/*.mdx"
 import { frontMatter as projects } from "./projects/**/*.mdx"
 import ExternalLink from "mdi-react/OpenInNewIcon"
-
-function formatPath(path) {
-  return path.replace(/\.mdx$/, "")
-}
+import { formatPath } from "utils"
 
 const HomeWrapper = styled.main`
   margin-bottom: 8rem;

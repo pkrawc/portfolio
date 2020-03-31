@@ -21,6 +21,7 @@
     "mdx-prism": "^0.3.1",
     "next": "^9.3.3",
     "next-mdx-enhanced": "^2.4.0",
+    "next-seo": "^4.4.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-ga": "^2.5.7",

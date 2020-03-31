@@ -9,6 +9,8 @@ import Container from "components/container"
 import Link from "next/link"
 import Sun from "mdi-react/WhiteBalanceSunnyIcon"
 import Moon from "mdi-react/WeatherNightIcon"
+import { DefaultSeo } from "next-seo"
+import seo from "../next-seo.config"
 
 const Header = styled(Container).attrs({ as: "header" })`
   display: flex;
@@ -64,6 +66,7 @@ export default function App({ Component, pageProps }) {
   return (
     <ThemeProvider theme={theme}>
       <MDXProvider components={MDXComponents}>
+        <DefaultSeo {...seo} />
         <Base />
         {loaded && (
           <Fragment>

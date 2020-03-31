@@ -7,9 +7,10 @@ module.exports = {
       "module-resolver",
       {
         alias: {
-          components: "./components"
-        }
-      }
-    ]
-  ]
+          components: "./components",
+          utils: "./utils.js",
+        },
+      },
+    ],
+  ],
 }
