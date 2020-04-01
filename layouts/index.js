@@ -4,8 +4,8 @@ import { Heading } from "components/typography"
 import { NextSeo, ArticleJsonLd } from "next-seo"
 import { formatPath } from "utils"
 
-function Seo({ title, summary, publishedAt, slug, image }) {
-  const date = new Date(publishedAt).toISOString()
+function Seo({ title, summary, published = new Date(), slug, image }) {
+  const date = new Date(published).toISOString()
   const url = `https://dreadful.design/${slug}`
   return (
     <Fragment>

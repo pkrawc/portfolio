@@ -30,7 +30,7 @@ export default class Document extends NextDoc {
           {this.props.styles}
           <link
             rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@200..900&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..600&display=swap"
           />
           <link rel="stylesheet" href="/styles/material-ocean-theme.css" />
         </Head>

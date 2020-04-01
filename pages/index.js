@@ -46,6 +46,11 @@ const ProjectWrapper = styled(Box)`
   }
 `
 
+const LT = styled.span`
+  color: ${({ theme }) => theme.colors.secondary};
+  text-decoration: line-through;
+`
+
 function Project({ project, idx, active, setActive }) {
   return (
     <ProjectWrapper mt="2rem" key={project.__resourcePath}>
@@ -88,7 +93,7 @@ export default function Home({ mode }) {
             Dreadful Design
           </Heading>
           <Heading fontSize="title" mt="1rem">
-            I build experiences that are <strike>un</strike>forgettable.
+            Experiences that are <LT>un</LT>forgettable.
           </Heading>
           <Stack gridAutoFlow="column">
             {projects.map((project, idx) => {

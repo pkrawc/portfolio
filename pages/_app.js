@@ -1,4 +1,10 @@
-import React, { useEffect, useState, createContext, Fragment } from "react"
+import React, {
+  useEffect,
+  useState,
+  createContext,
+  Fragment,
+  cloneElement,
+} from "react"
 import { useRouter } from "next/router"
 import analytics from "react-ga"
 import styled, { ThemeProvider } from "styled-components"
@@ -50,7 +56,7 @@ export default function App({ Component, pageProps }) {
   }
   const router = useRouter()
   const modes = ["light", "dark"]
-  const [mode, setMode] = useState(modes[0])
+  const [mode, setMode] = useState(modes[1])
   const [loaded, setLoaded] = useState(false)
   const theme = getTheme(mode)
   useEffect(() => {
