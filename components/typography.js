@@ -1,6 +1,5 @@
 import styled from "styled-components"
 import { typography, space, color } from "styled-system"
-import { theme } from "components/base"
 
 export const Heading = styled.h2`
   ${typography}
@@ -9,9 +8,7 @@ export const Heading = styled.h2`
 `
 
 Heading.defaultProps = {
-  fontSize: theme.fontSizes.title,
-  lineHeight: theme.lineHeights.short,
-  fontFamily: theme.fonts.body,
+  lineHeight: "short",
 }
 
 export const Text = styled.p`
@@ -21,7 +18,5 @@ export const Text = styled.p`
 `
 
 Text.defaultProps = {
-  fontSize: theme.fontSizes.body,
-  lineHeight: theme.lineHeights.normal,
-  fontFamily: theme.fonts.body,
+  lineHeight: "normal",
 }

@@ -1,14 +1,14 @@
 import { createGlobalStyle } from "styled-components"
 import { color } from "styled-system"
 
-const fontSizes = ["1rem", "1.5rem", "2rem", "3rem", "4rem", "5rem"]
-
-fontSizes.small = fontSizes[0]
-fontSizes.body = fontSizes[1]
-fontSizes.subtitle = fontSizes[2]
-fontSizes.title = fontSizes[3]
-fontSizes.headline = fontSizes[4]
-fontSizes.hero = fontSizes[5]
+const fontSizes = {
+  small: "1rem",
+  body: "1.5rem",
+  subtitle: "2rem",
+  title: "3rem",
+  headline: "4rem",
+  hero: "5rem",
+}
 
 const colors = {
   blue_100: "#DFEBF2",
@@ -49,11 +49,11 @@ colors.modes = {
   },
 }
 
-const lineHeights = [1.25, 1.5, 2]
-
-lineHeights.short = lineHeights[0]
-lineHeights.normal = lineHeights[1]
-lineHeights.long = lineHeights[2]
+const lineHeights = {
+  short: 1.25,
+  normal: 1.5,
+  long: 2
+}
 
 const breakPoints = ["40rem", "60rem", "80rem", "100rem", "120rem"]
 
@@ -65,7 +65,17 @@ export const theme = {
     code: `"Hack", monospace`,
   },
   fontSizes,
-  lineHeights: lineHeights,
+  fontWeights: {
+    light: 200,
+    normal: 400,
+    bold: 600,
+    black: 800
+  },
+  lineHeights: {
+    short: 1.25,
+    normal: 1.5,
+    long: 2
+  },
   space: [0, 8, 16, 24, 32, 40, 48, 56, 64, 72],
 }
 
@@ -104,22 +114,23 @@ export default createGlobalStyle`
   }
   h1 {
     font-size: ${({ theme }) => theme.fontSizes.hero};
+    font-weight: ${({theme}) => theme.fontWeights.light};
   }
   h2 {
     font-size: ${({ theme }) => theme.fontSizes.headline};
   }
   h3 {
     font-size: ${({ theme }) => theme.fontSizes.title};
-    font-weight: 400;
+    font-weight: ${({theme}) => theme.fontWeights.normal};
   }
   h4 {
     font-size: ${({ theme }) => theme.fontSizes.subtitle};
-    font-weight: 800;
+    font-weight: ${({theme}) => theme.fontWeights.bold};
   }
   a {
     color: ${({ theme }) => theme.colors.primary};
+    font-weight: ${({theme}) => theme.fontWeights.normal};
     text-decoration: none;
-    font-weight: 800;
     transition: 100ms;
     &:hover {
       color: ${({ theme }) => theme.colors.primaryLight};

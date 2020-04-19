@@ -42,7 +42,7 @@ export default (frontMatter) => {
     return (
       <Container my="4rem">
         <Seo {...frontMatter} slug={formatPath(frontMatter.__resourcePath)} />
-        <Heading as="h1" fontSize="4rem" mb="2rem">
+        <Heading as="h1" fontSize={["title", "headline"]} mb="2rem">
           {frontMatter.title}
         </Heading>
         {content}

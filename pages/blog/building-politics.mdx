@@ -1,31 +1,28 @@
 ---
 title: Using NextJS and Prismic to bring awareness to local government.
-summary: For the past two years I've been helping State Matters, a local non-profit focused on increasing awareness of state and local government. Here are the tools we used and our mental models while building on a shoe string budget.
+summary: For the past three years I've been helping State Matters, a local non-profit focused on increasing awareness of state and local government. Here are the tools we used and our mental models while building on a shoe string budget.
 published: 2020-03-30
 ---
 
-## Day One.
+## Background
 
-### Creating a social media platform for the greater good.
+After the 2016 election, there was a strong feeling of dread that engulfed a lot of us. A few individuals gathered around the idea of helping the average person be more involved with local politics.
 
-Man were there a lot of great ideas when we all got together for the first time. I joined State Matters after they had been meeting for a couple months, they were focused on getting as many people aware of local bills and state government goings-on as possible.
+State Matters was a small non-profit that had been started for this purpose, to educate and inform about local policies, bills, and elections. I learned they were looking for help building an online tool to accomplish their goals and I jumped on board.
 
-## Day Thirty.
+The original idea, much pivoted from, was to be an up to date display of bills, important dates, and plain english explanations of the whole of government goings on. We wanted social interaction, a newsletter, videos, articles, and more. While we're still working towards that goal we haven't reached that yet. Surprisingly, the tech is there, but writing those articles and editing those informational videos is a __lot__ of work.
 
-### Head in the clouds, nose to the code.
+I do think the tech stack that we ended up was no small part in the success that State Matters is today, and will be in the future. Dozens of people from designers to fullstack engineers have dedicated their time and brains into making statematters.org a place for info, and I'd like to thank everyone.
 
-## Day Ninty.
+## Building
 
-### First Release.
+### [Next.js](http://nextjs.com/)
 
-## Day One Hundred and Fifty.
+Next is a framework built around react. It gives developer sane solutions about routing, server rendering, static builds, api routing, and more. It's a dream to work with. Setting one up is as easy as `npx create-next-app --example [optional-example-from-next-examples]`.
 
-### Making people care is hard.
+The `/pages` directory is where all your routes live. `index.js` is the root of your application and a file like `pages/about.js` will automatically create a route to `/about`.
 
-## Day Three Hundred and Sixty.
 
-### Apparently other non-profits suck too.
+### [Styled Components](https://styled-components.com) & [Styled System](https://styled-system.com)
 
-## Day Seven Hundred and Thirty
-
-### We're all gonna be okay.
+Styling around the app was done with these two libraries. Styled components is a css-in-js library that's fast, and in my opinion has the best api. Styled system allows us to build easily themed components that have utility props baked in by default.
