@@ -49,7 +49,6 @@ Now that we have a space to work, lets create a server.
 
 ```js
 require("dotenv").config()
-const http = require("http")
 const express = require("express")
 const server = express()
 const buzzer = require("./buzzer")
@@ -60,10 +59,11 @@ server.set("port", port)
 
 server.use(express.json())
 server.use(express.urlencoded({ extended: true }))
+
 // We're namespacing this because why stop at a door buzzer?
 server.use("/buzzer", buzzer)
 
-http.createServer(server).listen(server.get("port"))
+server.listen(server.get("port"))
 ```
 
 ## Answering The Call
@@ -79,17 +79,17 @@ const VoiceResponse = twilio.twiml.VoiceResponse
 Once setup, twilio will send a post request to our server anytime someone rings the front door. We need to recieve that call, let them know that we're trying to flag a human down, and message a #channel on slack. Our webhook on twilio will be `/buzzer/call`.
 
 ```js
-function answerCall({body: CallSid}, res) {
+function answerCall({body: {CallSid: id}}, res) {
   const twiml = new VoiceResponse({voice: "alice"})
   // If no call id, return a bad request status.
-  if (!CallSid) res.status(403).end()
+  if (!id) res.status(403).end()
   // Greet guest
   twiml.say("Welcome to Avail. One minute.")
   // Pause the phone call and continue on to message slack.
   twiml.pause({ length: 180 })
   try {
     // Ping the slack channel.
-    await messageSlack({id: CallSid})
+    await messageSlack({ id })
     twiml.say("No one was available. Please try again later.")
   } catch (error) {
     twiml.say("Something went wrong. Please try again.")
@@ -133,17 +133,21 @@ function messageSlack({ id }) {
 Once we've messaged slack now we wait for a reply. You can read up on [creating rich messages and incoming webhooks with slack](https://api.slack.com/). We'll also need to turn _interactivity_ on and set a resonable request url, I've chosen `/slack-response`. Slack will post the result of your slack teams action choice to this route, so we'll need to access it and take the right action.
 
 ```js
-async function slackResponse(req, res) {
-  const {
-    payload: {
-      user: { name },
-      response_url,
-      actions: [{ block_id, value }],
+async function slackResponse(
+  {
+    body: {
+      payload: {
+        user: { name },
+        response_url,
+        actions: [{ block_id, value }],
+      },
     },
-  } = JSON.parse(req.body)
+  },
+  res
+) {
   const open = value === "open"
   // This is async
-  twilioClient.calls(block_id).update({
+  await twilioClient.calls(block_id).update({
     url: `${ROOT_URL}/buzzer/${value}?url=${response_url}`,
     method: "post",
   })

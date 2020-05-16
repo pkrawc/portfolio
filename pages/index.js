@@ -17,7 +17,6 @@ const HomeWrapper = styled.main`
     margin-top: 4rem;
     min-height: 50vh;
     align-items: center;
-    grid-template-columns: 22rem auto;
     gap: 2rem;
   }
 `
@@ -74,7 +73,10 @@ export default function Home({ mode }) {
   const [activeIdx, setActive] = useState(0)
   return (
     <HomeWrapper>
-      <Container className="hero">
+      <Container
+        className="hero"
+        gridTemplateColumns={["minmax(auto, 24rem) 1fr"]}
+      >
         <Box
           as="iframe"
           frameBorder="0"
@@ -89,10 +91,10 @@ export default function Home({ mode }) {
           gridColumn={["span 2", "span 2", "span 1"]}
           gridRow={[1, 1, "auto"]}
         >
-          <Heading as="h1" fontSize="hero">
+          <Heading as="h1" fontSize={["headline", "hero"]}>
             Dreadful Design
           </Heading>
-          <Heading fontSize="title" mt="1rem">
+          <Heading fontSize={["subtitle", "title"]} mt="1rem">
             Experiences that are <LT>un</LT>forgettable.
           </Heading>
           <Stack gridAutoFlow="column">

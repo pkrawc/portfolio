@@ -1,9 +1,11 @@
 import styled from "styled-components"
-import { space, layout } from "styled-system"
+import { space, layout, grid, flexbox } from "styled-system"
 
 const Container = styled.section`
   ${space};
   ${layout};
+  ${grid};
+  ${flexbox};
 `
 
 Container.defaultProps = {

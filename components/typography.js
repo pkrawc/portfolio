@@ -1,10 +1,11 @@
 import styled from "styled-components"
-import { typography, space, color } from "styled-system"
+import { typography, space, color, flexbox } from "styled-system"
 
 export const Heading = styled.h2`
-  ${typography}
-  ${space}
-  ${color}
+  ${typography};
+  ${space};
+  ${color};
+  ${flexbox};
 `
 
 Heading.defaultProps = {
@@ -12,9 +13,10 @@ Heading.defaultProps = {
 }
 
 export const Text = styled.p`
-  ${typography}
-  ${space}
-  ${color}
+  ${typography};
+  ${space};
+  ${color};
+  ${flexbox};
 `
 
 Text.defaultProps = {

@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import { Heading, Text } from "components/typography"
-import Box from "components/box"
+import CodeBlock from "components/codeBlock"
 
 const Code = styled.code`
   padding: 0.25rem;
@@ -12,14 +12,16 @@ const Code = styled.code`
 `
 
 export default {
-  h1: ({ ...props }) => <Heading {...props} as="h1" my={3} />,
+  h1: ({ ...props }) => (
+    <Heading {...props} as="h1" fontSize={["hero", "heading"]} my={3} />
+  ),
   h2: ({ ...props }) => (
     <Heading
       {...props}
       as="h2"
       my={2}
       fontWeight="bold"
-      fontSize={["subtitle", "headline"]}
+      fontSize={["subtitle", "heading"]}
     />
   ),
   h3: ({ ...props }) => (
@@ -27,7 +29,7 @@ export default {
   ),
   p: ({ ...props }) => <Text {...props} mt={2} />,
   inlineCode: ({ ...props }) => <Code {...props} as="code" />,
-  pre: ({ ...props }) => <Box {...props} as="pre" my="2rem" display="block" />,
+  pre: CodeBlock,
   img: ({ ...props }) => <img {...props} style={{ maxWidth: "100%" }} />,
   strong: ({ ...props }) => <strong {...props} style={{ fontWeight: "800" }} />,
 }
