@@ -4,88 +4,39 @@ import { getFrontMatter } from "@utils"
 import Container from "@components/container"
 import Box from "@components/box"
 import useWindowSize from "@hooks/useWindowResize"
-import { useEffect, useRef, useState } from "react"
-
-// const HomeWrapper = styled.main`
-//   margin-bottom: 8rem;
-//   .hero {
-//     display: grid;
-//     margin-top: 4rem;
-//     min-height: 50vh;
-//     align-items: center;
-//     gap: 2rem;
-//   }
-// `
-
-// const Post = styled(Box)`
-//   cursor: pointer;
-//   transition: 100ms;
-//   border-radius: 0.25rem;
-//   &:hover {
-//     background: ${({ theme, mode }) =>
-//       mode === "light" ? theme.colors.green_100 : theme.colors.green_900};
-//     color: ${({ theme, mode }) =>
-//       mode === "light" ? theme.colors.green_900 : theme.colors.green_300};
-//   }
-//   h3 {
-//     margin-bottom: 1rem;
-//   }
-// `
-
-// const ProjectWrapper = styled(Box)`
-//   h4 {
-//     cursor: pointer;
-//     &:hover {
-//       color: ${({ theme }) => theme.colors.font};
-//     }
-//   }
-// `
-
-// const LT = styled.span`
-//   color: ${({ theme }) => theme.colors.secondary};
-//   text-decoration: line-through;
-// `
-
-// function Project({ project, idx, active, setActive }) {
-//   return (
-//     <ProjectWrapper mt="2rem" key={project.__resourcePath}>
-//       <Heading
-//         as="h4"
-//         color={active ? "secondaryFont" : "ui_700"}
-//         fontSize="2rem"
-//         onClick={(e) => setActive(idx)}
-//         css="display:flex;align-items:center"
-//       >
-//         <span>{project.title}</span>
-//         <Link href={formatPath(project.__resourcePath)}>
-//           <ExternalLink css="margin-left:0.5rem" />
-//         </Link>
-//       </Heading>
-//     </ProjectWrapper>
-//   )
-// }
+import { useState } from "react"
+import { useSpring, animated } from "react-spring"
 
 function Device({ src }: { src: string }) {
-  const fullWidth = 320
-  const deviceRef = useRef(null)
-  const [scale, setScale] = useState(1)
-  useEffect(() => {
-    function handleScale() {
-      setScale(Math.min(deviceRef.current.clientWidth / fullWidth, 1))
-    }
-    window.addEventListener("resize", handleScale)
-    handleScale()
-    return () => window.removeEventListener("resize", handleScale)
-  }, [])
+  // const [animatedProps, setAnimated] = useSpring(() => ({
+  //   xy: [0, 0],
+  //   scale: 1,
+  //   config: { mass: 10, tension: 550, friction: 140 },
+  // }))
+  // const calc = (x: number, y: number) => [
+  //   x - window.innerWidth / 2,
+  //   y - window.innerHeight / 2,
+  // ]
+  // const rotateCalc = (value) => Math.max(Math.min(value / 10, 1), -1)
+  // const translate = (x: number, y: number) =>
+  //   `rotate3d(${rotateCalc(x)}, ${rotateCalc(y)}, 0, 0deg)`
+  // const handleScale = useCallback(({ clientX: x, clientY: y }) => {
+  //   const newValue = calc(x, y)
+  //   console.log(newValue)
+  //   setAnimated({ xy: newValue })
+  // }, [])
+  // useEffect(() => {
+  //   window.addEventListener("mousemove", handleScale)
+  //   return () => window.removeEventListener("resize", handleScale)
+  // }, [])
   return (
     <Box
-      ref={deviceRef}
-      as="figure"
+      as={animated.figure}
       sx={{
         position: "relative",
         borderRadius: "1rem",
         bg: "primary",
-        paddingTop: "217%",
+        paddingTop: "180%",
         height: 0,
         width: "100%",
         overflow: "hidden",
@@ -102,11 +53,6 @@ function Device({ src }: { src: string }) {
           width: "100%",
           height: "100%",
           transformOrigin: "top left",
-        }}
-        style={{
-          transform: `scale(${scale})`,
-          width: `${100 / scale}%`,
-          height: `${100 / scale}%`,
         }}
       />
     </Box>
@@ -131,10 +77,12 @@ export default function Homepage({ posts, projects }) {
       sx={{
         display: "grid",
         gridAutoFlow: "dense",
-        gridTemplateColumns: "minmax(auto, 20rem) 1fr",
+        gridTemplateColumns: "minmax(auto, 22rem) 1fr",
         minHeight: "calc(100vh - 10rem)",
         gap: "2rem",
         alignItems: "center",
+        perspective: 800,
+        marginBottom: "2rem",
       }}
     >
       <Box as="section" sx={{ gridColumn: ["span 2", "span 2", "span 1"] }}>
