@@ -1,6 +1,6 @@
 import styled from "styled-components"
-import { Heading, Text } from "components/typography"
-import CodeBlock from "components/codeBlock"
+import { Heading, Text } from "@components/typography"
+import CodeBlock from "@components/codeBlock"
 
 const Code = styled.code`
   padding: 0.25rem;

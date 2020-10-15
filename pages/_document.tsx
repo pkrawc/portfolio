@@ -1,8 +1,16 @@
-import { default as NextDoc, Head, Main, NextScript } from "next/document"
+import { Fragment } from "react"
+import {
+  default as NextDoc,
+  Html,
+  Head,
+  Main,
+  NextScript,
+  DocumentContext,
+} from "next/document"
 import { ServerStyleSheet } from "styled-components"
 
 export default class Document extends NextDoc {
-  static async getInitialProps(context) {
+  static async getInitialProps(context: DocumentContext) {
     const sheet = new ServerStyleSheet()
     const originalRender = context.renderPage
     try {
@@ -14,7 +22,12 @@ export default class Document extends NextDoc {
       const initialProps = await NextDoc.getInitialProps(context)
       return {
         ...initialProps,
-        styles: sheet.getStyleElement(),
+        styles: (
+          <Fragment>
+            {initialProps.styles}
+            {sheet.getStyleElement()}
+          </Fragment>
+        ),
       }
     } finally {
       sheet.seal()
@@ -22,11 +35,12 @@ export default class Document extends NextDoc {
   }
   render() {
     return (
-      <html lang="en">
+      <Html lang="en">
         <Head>
           <meta charSet="utf-8" />
           <meta name="theme-color" content="#07456f" />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <link rel="icon" type="image/x-icon" href="/app-icons/favicon.ico" />
+          <link rel="icon" type="image/png" href="/app-icons/favicon.png" />
           {this.props.styles}
           <link
             rel="stylesheet"
@@ -38,7 +52,7 @@ export default class Document extends NextDoc {
           <Main />
           <NextScript />
         </body>
-      </html>
+      </Html>
     )
   }
 }
