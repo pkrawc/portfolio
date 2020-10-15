@@ -1,7 +1,7 @@
 const title = "Dreadful Design | Questionable UX"
 const description = "UX engineering with a touch of realism."
 
-const SEO = {
+const seo = {
   title,
   description,
   canonical: "https://dreadful.design",
@@ -19,4 +19,4 @@ const SEO = {
   },
 }
 
-export default SEO
+export default seo
