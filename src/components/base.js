@@ -1,5 +1,4 @@
 import { createGlobalStyle, css } from "styled-components"
-import { color } from "styled-system"
 
 const fontSizes = {
   small: "1rem",
@@ -50,9 +49,36 @@ colors.modes = {
 }
 
 const lineHeights = {
-  short: 1.25,
-  normal: 1.5,
-  long: 2,
+  heading: 1.25,
+  body: 1.5,
+  small: 2,
+}
+
+const text = {
+  body: {
+    lineHeight: "body",
+    fontSize: "body",
+  },
+  small: {
+    lineHeight: "small",
+    fontSize: "small",
+  },
+  subtitle: {
+    lineHeight: "heading",
+    fontSize: "subtitle",
+  },
+  title: {
+    lineHeight: "heading",
+    fontSize: "title",
+  },
+  headline: {
+    lineHeight: "heading",
+    fontSize: "headline",
+  },
+  hero: {
+    lineHeight: "heading",
+    fontSize: "hero",
+  },
 }
 
 const breakPoints = ["40rem", "60rem", "80rem", "100rem", "120rem"]
@@ -72,6 +98,7 @@ export const theme = {
     black: 800,
   },
   lineHeights,
+  text,
   space: [0, 8, 16, 24, 32, 40, 48, 56, 64, 72],
 }
 
@@ -164,7 +191,7 @@ export default createGlobalStyle(
     }
     body {
       font-size: ${fontSizes.body};
-      line-height: ${lineHeights.normal};
+      line-height: ${lineHeights.body};
       font-family: ${fonts.body};
       background: ${colors.background};
       color: ${colors.font};
@@ -175,7 +202,7 @@ export default createGlobalStyle(
     h3,
     h4,
     h5 {
-      line-height: ${lineHeights.short};
+      line-height: ${lineHeights.heading};
     }
     h1 {
       font-size: ${fontSizes.hero};

@@ -1,54 +1,28 @@
+import glob from "glob"
 import { useEffect, useState } from "react"
 import { GetStaticProps } from "next"
-import glob from "glob"
+import Link from "next/link"
+import { motion, useTransform, useSpring } from "framer-motion"
 import { getMdxFile } from "@utils"
 import Container from "@components/container"
 import Box from "@components/box"
 import useWindowSize from "@hooks/useWindowResize"
 
-function Device({ src, ...props }: any) {
-  useEffect(() => {}, [])
-  return (
-    <Box
-      {...props}
-      as="figure"
-      sx={{
-        position: "relative",
-        borderRadius: "1rem",
-        bg: "accent",
-        paddingTop: "180%",
-        height: 0,
-        width: "100%",
-        overflow: "hidden",
-        transform: "rotateX(5deg) scale(0.85)",
-        transformStyle: "preserve-3d",
-      }}
-    >
-      <Box
-        as="iframe"
-        frameBorder="0"
-        src={src}
-        sx={{
-          position: "absolute",
-          left: "0",
-          top: "0",
-          width: "100%",
-          height: "100%",
-        }}
-      />
-    </Box>
-  )
-}
-
 export const getStaticProps: GetStaticProps = async function () {
-  const postFiles = glob.sync("./content/posts/*.mdx")
+  const postFiles = glob.sync("./content/projects/*.mdx")
   const playgroundFiles = glob.sync("./content/playground/*.mdx")
-  const posts = getMdxFile(postFiles)
+  const projects = getMdxFile(postFiles)
   const playground = getMdxFile(playgroundFiles)
-  return { props: { posts, playground } }
+  return {
+    props: {
+      projects: projects.map(({ data, slug }) => ({ ...data, slug })),
+      playground,
+    },
+  }
 }
 
-export default function Homepage({ posts, playground }) {
+export default function Homepage({ projects, playground }) {
+  console.log(projects)
   const [activeProject, setActive] = useState(0)
   const { width } = useWindowSize()
   const isMobile = width > 750
@@ -134,9 +108,97 @@ export default function Homepage({ posts, playground }) {
           </Box>
         </Box>
       </Container>
-      <Container as="section" sx={{ mt: "4rem" }}>
-        <Box as="h3">Projects</Box>
+      <Container as="section" sx={{ mt: "4rem", display: "grid", gap: "2rem" }}>
+        <Box as="h3" sx={{ fontSize: "subtitle" }}>
+          Selected Work
+        </Box>
+        {projects.map((project, idx) => (
+          <ProjectLink project={project} key={project.slug} />
+        ))}
       </Container>
     </Box>
+  )
+}
+
+function Device({ src, ...props }: any) {
+  const mouseX = useSpring(0)
+  const mouseY = useSpring(0)
+  const x = useTransform(mouseX, [0, 600], [-10, 10])
+  const y = useTransform(mouseY, [0, 400], [5, -5])
+  function handleMouseMove({ clientX, clientY }) {
+    mouseX.set(clientX)
+    mouseY.set(clientY)
+  }
+  useEffect(() => {
+    document.body.addEventListener("mousemove", handleMouseMove)
+    return () => document.body.removeEventListener("mousemove", handleMouseMove)
+  }, [])
+  return (
+    <Box
+      {...props}
+      as={motion.figure}
+      initial={{ scale: 0.8 }}
+      style={{
+        rotateX: y,
+        rotateY: x,
+      }}
+      sx={{
+        position: "relative",
+        borderRadius: "1rem",
+        bg: "accent",
+        paddingTop: "180%",
+        height: 0,
+        width: "100%",
+        overflow: "hidden",
+        transformStyle: "preserve-3d",
+        boxShadow: "0 24px 24px -24px rgba(0,0,0,0.24)",
+      }}
+    >
+      <Box
+        as="iframe"
+        frameBorder="0"
+        src={src}
+        sx={{
+          position: "absolute",
+          left: "0",
+          top: "0",
+          width: "100%",
+          height: "100%",
+        }}
+      />
+    </Box>
+  )
+}
+
+type ProjectLinkProps = {
+  project: any
+}
+
+function ProjectLink({ project }: ProjectLinkProps) {
+  return (
+    <Link href={project.slug}>
+      <Box
+        as="article"
+        sx={{
+          p: "2rem",
+          mx: "-2rem",
+          transition: "200ms",
+          cursor: "pointer",
+          borderRadius: "0.5rem",
+          "&:hover": {
+            bg: "accent",
+            color: "secondaryFont",
+            transform: "translateY(-0.5rem) scale(1.025)",
+          },
+        }}
+      >
+        <Box as="h3" sx={{ fontSize: "title" }}>
+          {project.title}
+        </Box>
+        <Box as="p" sx={{ mt: "1rem" }}>
+          {project.summary}
+        </Box>
+      </Box>
+    </Link>
   )
 }

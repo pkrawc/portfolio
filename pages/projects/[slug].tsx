@@ -6,8 +6,8 @@ import renderToString from "next-mdx-remote/render-to-string"
 import Container from "@components/container"
 
 export const getStaticPaths: GetStaticPaths = async function () {
-  const paths = glob.sync("./content/posts/*.mdx").map((file) => ({
-    params: { slug: formatPath(file).replace(/\/posts\//, "") },
+  const paths = glob.sync("./content/projects/*.mdx").map((file) => ({
+    params: { slug: formatPath(file).replace(/\/projects\//, "") },
   }))
   return {
     fallback: false,
@@ -21,13 +21,13 @@ export const getStaticProps: GetStaticProps = async function ({
   params: { slug },
 }) {
   const [{ content: postContent, data: frontMatter }] = getMdxFile([
-    `./content/posts/${slug}.mdx`,
+    `./content/projects/${slug}.mdx`,
   ])
   const mdx = await renderToString(postContent)
   return { props: { mdx, frontMatter } }
 }
 
-export default function PostPage({ mdx, frontMatter }) {
+export default function ProjectPage({ mdx, frontMatter }) {
   console.log(frontMatter)
   const content = hydrate(mdx)
   return <Container>{content}</Container>

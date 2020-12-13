@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@styled-system/css": "^5.1.5",
+    "framer-motion": "^2.9.5",
     "glob": "^7.1.6",
     "gray-matter": "^4.0.2",
     "mdi-react": "^7.4.0",

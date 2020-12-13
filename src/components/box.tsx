@@ -11,7 +11,16 @@ import {
 } from "styled-system"
 import css from "@styled-system/css"
 
-const sx = ({ sx = {} }: any) => css(sx)
+const sx = ({ sx = {} }: any) => {
+  const { text, ...styleProps } = sx
+  if (text) {
+    return css({
+      variant: [...text].map((txt) => `text.${txt}`),
+      ...styleProps,
+    })
+  }
+  return css(styleProps)
+}
 
 type BoxProps = {
   sx?: any
