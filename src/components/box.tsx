@@ -11,9 +11,13 @@ import {
 } from "styled-system"
 import css from "@styled-system/css"
 
-const sx = ({ sx = {} }: { sx: object }) => css(sx)
+const sx = ({ sx = {} }: any) => css(sx)
 
-const Box = styled("div")(
+type BoxProps = {
+  sx?: any
+}
+
+const Box = styled("div")<BoxProps>(
   compose(space, layout, flexbox, grid, background, color, border),
   sx
 )

@@ -1,4 +1,4 @@
-import { createGlobalStyle } from "styled-components"
+import { createGlobalStyle, css } from "styled-components"
 import { color } from "styled-system"
 
 const fontSizes = {
@@ -37,7 +37,7 @@ colors.modes = {
     background: colors.blue_900,
     primary: colors.green_500,
     primaryLight: colors.green_300,
-    secondary: colors.blue_500,
+    accent: colors.blue_500,
   },
   light: {
     font: colors.blue_900,
@@ -45,14 +45,14 @@ colors.modes = {
     background: colors.ui_100,
     primary: colors.green_500,
     primaryLight: colors.green_300,
-    secondary: color.blue_500,
+    accent: colors.blue_500,
   },
 }
 
 const lineHeights = {
   short: 1.25,
   normal: 1.5,
-  long: 2
+  long: 2,
 }
 
 const breakPoints = ["40rem", "60rem", "80rem", "100rem", "120rem"]
@@ -69,74 +69,140 @@ export const theme = {
     light: 200,
     normal: 400,
     bold: 600,
-    black: 800
+    black: 800,
   },
-  lineHeights: {
-    short: 1.25,
-    normal: 1.5,
-    long: 2
-  },
+  lineHeights,
   space: [0, 8, 16, 24, 32, 40, 48, 56, 64, 72],
 }
 
-export default createGlobalStyle`
-  * {
-    box-sizing: border-box;
-  }
-  :root {
-    font-size: 16px;
-  }
-  html, body, div, span, object, iframe,
-  h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-  a, abbr, address, big, cite, code,
-  del, dfn, em, img, ins, kbd, q, s, samp,
-  small, strong, sub, sup, var,
-  b, u, i, dl, dt, dd, ol, ul, li,
-  fieldset, form, label, legend,
-  table, caption, tbody, tfoot, thead, tr, th, td,
-  article, aside, canvas, details, embed,
-  figure, figcaption, footer, header, hgroup,
-  menu, nav, output, ruby, section, summary,
-  time, mark, audio, video {
-    margin: 0;
-    padding: 0;
-  }
-  body {
-    font-size: ${({ theme }) => theme.fontSizes.body};
-    line-height: ${({ theme }) => theme.lineHeights.normal};
-    font-family: ${({ theme }) => theme.fonts.body};
-    background: ${({ theme }) => theme.colors.background};
-    color: ${({ theme }) => theme.colors.font};
-    font-feature-settings: "kern", "liga", "clig", "calt";
-  }
-  h1, h2, h3, h4, h5 {
-    line-height: ${({ theme }) => theme.lineHeights.short};
-  }
-  h1 {
-    font-size: ${({ theme }) => theme.fontSizes.hero};
-    font-weight: ${({theme}) => theme.fontWeights.light};
-  }
-  h2 {
-    font-size: ${({ theme }) => theme.fontSizes.headline};
-  }
-  h3 {
-    font-size: ${({ theme }) => theme.fontSizes.title};
-    font-weight: ${({theme}) => theme.fontWeights.normal};
-  }
-  h4 {
-    font-size: ${({ theme }) => theme.fontSizes.subtitle};
-    font-weight: ${({theme}) => theme.fontWeights.bold};
-  }
-  a {
-    color: ${({ theme }) => theme.colors.primary};
-    font-weight: ${({theme}) => theme.fontWeights.normal};
-    text-decoration: none;
-    transition: 100ms;
-    &:hover {
-      color: ${({ theme }) => theme.colors.primaryLight};
+export default createGlobalStyle(
+  ({ theme: { fonts, fontSizes, fontWeights, lineHeights, colors } }) => css`
+    * {
+      box-sizing: border-box;
     }
-  }
-  .small {
-    font-size: ${({ theme }) => theme.fontSizes.small};
-  }
-`
+    :root {
+      font-size: 16px;
+    }
+    html,
+    body,
+    div,
+    span,
+    object,
+    iframe,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    blockquote,
+    pre,
+    a,
+    abbr,
+    address,
+    big,
+    cite,
+    code,
+    del,
+    dfn,
+    em,
+    img,
+    ins,
+    kbd,
+    q,
+    s,
+    samp,
+    small,
+    strong,
+    sub,
+    sup,
+    var,
+    b,
+    u,
+    i,
+    dl,
+    dt,
+    dd,
+    ol,
+    ul,
+    li,
+    fieldset,
+    form,
+    label,
+    legend,
+    table,
+    caption,
+    tbody,
+    tfoot,
+    thead,
+    tr,
+    th,
+    td,
+    article,
+    aside,
+    canvas,
+    details,
+    embed,
+    figure,
+    figcaption,
+    footer,
+    header,
+    hgroup,
+    menu,
+    nav,
+    output,
+    ruby,
+    section,
+    summary,
+    time,
+    mark,
+    audio,
+    video {
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-size: ${fontSizes.body};
+      line-height: ${lineHeights.normal};
+      font-family: ${fonts.body};
+      background: ${colors.background};
+      color: ${colors.font};
+      font-feature-settings: "kern", "liga", "clig", "calt";
+    }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+      line-height: ${lineHeights.short};
+    }
+    h1 {
+      font-size: ${fontSizes.hero};
+      font-weight: ${fontWeights.light};
+    }
+    h2 {
+      font-size: ${fontSizes.headline};
+    }
+    h3 {
+      font-size: ${fontSizes.title};
+      font-weight: ${fontWeights.normal};
+    }
+    h4 {
+      font-size: ${fontSizes.subtitle};
+      font-weight: ${fontWeights.bold};
+    }
+    a {
+      color: ${colors.primary};
+      font-weight: ${fontWeights.normal};
+      text-decoration: none;
+      transition: 100ms;
+      &:hover {
+        color: ${colors.primaryLight};
+      }
+    }
+    .small {
+      font-size: ${fontSizes.small};
+    }
+  `
+)

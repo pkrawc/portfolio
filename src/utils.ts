@@ -1,16 +1,15 @@
 import * as fs from "fs"
 import matter from "gray-matter"
-import { useCallback, useEffect, useReducer } from "react"
 
-export function formatPath(path) {
+export function formatPath(path: string) {
   return path.replace(/\.\/content/, "").replace(/\.mdx/, "")
 }
 
-export function getFrontMatter(files: string[]) {
+export function getMdxFile(files: string[]) {
   return files.map((file: string) => {
     const slug = formatPath(file)
     const source = fs.readFileSync(file, "utf-8")
-    const { data } = matter(source)
-    return { data, slug }
+    const { data, content } = matter(source)
+    return { content, data, slug }
   })
 }

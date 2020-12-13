@@ -1,45 +1,27 @@
+import { useEffect, useState } from "react"
 import { GetStaticProps } from "next"
 import glob from "glob"
-import { getFrontMatter } from "@utils"
+import { getMdxFile } from "@utils"
 import Container from "@components/container"
 import Box from "@components/box"
 import useWindowSize from "@hooks/useWindowResize"
-import { useState } from "react"
-import { useSpring, animated } from "react-spring"
 
-function Device({ src }: { src: string }) {
-  // const [animatedProps, setAnimated] = useSpring(() => ({
-  //   xy: [0, 0],
-  //   scale: 1,
-  //   config: { mass: 10, tension: 550, friction: 140 },
-  // }))
-  // const calc = (x: number, y: number) => [
-  //   x - window.innerWidth / 2,
-  //   y - window.innerHeight / 2,
-  // ]
-  // const rotateCalc = (value) => Math.max(Math.min(value / 10, 1), -1)
-  // const translate = (x: number, y: number) =>
-  //   `rotate3d(${rotateCalc(x)}, ${rotateCalc(y)}, 0, 0deg)`
-  // const handleScale = useCallback(({ clientX: x, clientY: y }) => {
-  //   const newValue = calc(x, y)
-  //   console.log(newValue)
-  //   setAnimated({ xy: newValue })
-  // }, [])
-  // useEffect(() => {
-  //   window.addEventListener("mousemove", handleScale)
-  //   return () => window.removeEventListener("resize", handleScale)
-  // }, [])
+function Device({ src, ...props }: any) {
+  useEffect(() => {}, [])
   return (
     <Box
-      as={animated.figure}
+      {...props}
+      as="figure"
       sx={{
         position: "relative",
         borderRadius: "1rem",
-        bg: "primary",
+        bg: "accent",
         paddingTop: "180%",
         height: 0,
         width: "100%",
         overflow: "hidden",
+        transform: "rotateX(5deg) scale(0.85)",
+        transformStyle: "preserve-3d",
       }}
     >
       <Box
@@ -52,7 +34,6 @@ function Device({ src }: { src: string }) {
           top: "0",
           width: "100%",
           height: "100%",
-          transformOrigin: "top left",
         }}
       />
     </Box>
@@ -61,164 +42,101 @@ function Device({ src }: { src: string }) {
 
 export const getStaticProps: GetStaticProps = async function () {
   const postFiles = glob.sync("./content/posts/*.mdx")
-  const projectFiles = glob.sync("./content/projects/*.mdx")
-  const posts = getFrontMatter(postFiles)
-  const projects = getFrontMatter(projectFiles)
-  return { props: { posts, projects } }
+  const playgroundFiles = glob.sync("./content/playground/*.mdx")
+  const posts = getMdxFile(postFiles)
+  const playground = getMdxFile(playgroundFiles)
+  return { props: { posts, playground } }
 }
 
-export default function Homepage({ posts, projects }) {
+export default function Homepage({ posts, playground }) {
   const [activeProject, setActive] = useState(0)
   const { width } = useWindowSize()
   const isMobile = width > 750
   return (
-    <Container
-      as="main"
-      sx={{
-        display: "grid",
-        gridAutoFlow: "dense",
-        gridTemplateColumns: "minmax(auto, 22rem) 1fr",
-        minHeight: "calc(100vh - 10rem)",
-        gap: "2rem",
-        alignItems: "center",
-        perspective: 800,
-        marginBottom: "2rem",
-      }}
-    >
-      <Box as="section" sx={{ gridColumn: ["span 2", "span 2", "span 1"] }}>
-        <Device src={projects[activeProject].data.url} />
-        <Box
-          as="nav"
-          sx={{
-            display: "flex",
-            mt: "1rem",
-            justifyContent: "center",
-            gap: "2rem",
-          }}
-        >
-          {projects.map((project: any, idx: number) => {
-            const isActive = idx === activeProject
-            return (
-              <Box
-                as="button"
-                key={project.data.url}
-                sx={{
-                  appearance: "none",
-                  border: "none",
-                  width: "1rem",
-                  height: "1rem",
-                  borderRadius: "50%",
-                  bg: isActive ? "primaryLight" : "secondary",
-                  transform: isActive ? "scale(1.1)" : "scale(1)",
-                  transition: "200ms",
-                  outline: "none",
-                }}
-                onClick={() => setActive(idx)}
-              />
-            )
-          })}
-        </Box>
-      </Box>
-      <Box
+    <Box as="main">
+      <Container
         as="section"
         sx={{
-          gridColumn: ["span 2", "span 2", "span 1"],
-          gridRowStart: ["1", "1", "auto"],
+          display: "grid",
+          gridAutoFlow: "dense",
+          gridTemplateColumns: "minmax(auto, 22rem) 1fr",
+          minHeight: "calc(100vh - 20rem)",
+          gap: "2rem",
+          alignItems: "center",
+          my: "2rem",
         }}
       >
-        <Box as="h1">Dreadful Design</Box>
-        <Box as="h2" sx={{ fontSize: "subtitle" }}>
-          Experiences that are <s>un</s>forgettable.
-        </Box>
         <Box
-          as="h3"
+          as="section"
           sx={{
-            fontSize: "body",
-            mt: "2rem",
-            color: "secondaryFont",
-            "> strong": { fontWeight: "black", color: "font" },
+            gridColumn: ["span 2", "span 2", "span 1"],
+            perspectiveOrigin: "top center",
+            perspective: [0, 0, 500],
           }}
         >
-          &#128075; I'm Patrick, a <strong>Product Designer</strong> living in{" "}
-          <strong>Chicago</strong>. My focus is web applications and products.
-          You can mess around with some of my UI experiments{" "}
-          {isMobile ? "to the left" : "below"}.
+          <Device src={playground[activeProject].data.url} />
+          <Box
+            as="nav"
+            sx={{
+              display: "flex",
+              mt: "1rem",
+              justifyContent: "center",
+              gap: "2rem",
+            }}
+          >
+            {playground.map((project: any, idx: number) => {
+              const isActive = idx === activeProject
+              return (
+                <Box
+                  as="button"
+                  key={project.data.url}
+                  sx={{
+                    appearance: "none",
+                    border: "none",
+                    width: "1rem",
+                    height: "1rem",
+                    borderRadius: "50%",
+                    bg: isActive ? "primary" : "secondary",
+                    transform: isActive ? "scale(1.1)" : "scale(1)",
+                    transition: "200ms",
+                    outline: "none",
+                  }}
+                  onClick={() => setActive(idx)}
+                />
+              )
+            })}
+          </Box>
         </Box>
-      </Box>
-    </Container>
+        <Box
+          as="section"
+          sx={{
+            gridColumn: ["span 2", "span 2", "span 1"],
+            gridRowStart: ["1", "1", "auto"],
+          }}
+        >
+          <Box as="h1">Dreadful Design</Box>
+          <Box as="h2" sx={{ fontSize: "subtitle" }}>
+            Experiences that are <s>un</s>forgettable.
+          </Box>
+          <Box
+            as="h3"
+            sx={{
+              fontSize: "body",
+              mt: "2rem",
+              color: "secondaryFont",
+              "> strong": { fontWeight: "black", color: "font" },
+            }}
+          >
+            &#x1f44b; I'm Patrick, a <strong>Product Designer</strong> living in{" "}
+            <strong>Chicago</strong>. My focus is on progressive web apps. You
+            can mess around with some of my UI experiments{" "}
+            {isMobile ? "to the left" : "below"}.
+          </Box>
+        </Box>
+      </Container>
+      <Container as="section" sx={{ mt: "4rem" }}>
+        <Box as="h3">Projects</Box>
+      </Container>
+    </Box>
   )
 }
-
-// export default function Home({ mode }) {
-//   const [activeIdx, setActive] = useState(0)
-//   return (
-//     <HomeWrapper>
-//       <Container
-//         className="hero"
-//         gridTemplateColumns={["minmax(auto, 24rem) 1fr"]}
-//       >
-//         <Box
-//           as="iframe"
-//           sx={{
-//             frameBorder: 0,
-//             gridColumn: ["span 2", _, "span 1"],
-//             borderRadius: "1rem",
-//             height: "80vh",
-//             width: "100%",
-//             maxHeight: "40rem",
-//             transform: "scale(0.75)",
-//           }}
-//           src={projects[activeIdx].url}
-//         />
-//         <Box
-//           gridColumn={["span 2", "span 2", "span 1"]}
-//           gridRow={[1, 1, "auto"]}
-//         >
-//           <Heading as="h1" fontSize={["headline", "hero"]}>
-//             Dreadful Design
-//           </Heading>
-//           <Heading fontSize={["subtitle", "title"]} mt="1rem">
-//             Experiences that are <LT>un</LT>forgettable.
-//           </Heading>
-//           <Stack gridAutoFlow="column">
-//             {projects.map((project, idx) => {
-//               const active = idx === activeIdx
-//               return (
-//                 <Project
-//                   key={project.__resourcePath}
-//                   project={project}
-//                   idx={idx}
-//                   active={active}
-//                   setActive={setActive}
-//                 />
-//               )
-//             })}
-//           </Stack>
-//         </Box>
-//       </Container>
-//       <Container mt="4rem">
-//         <Stack as="ul" css="list-style: none;">
-//           <Heading as="h4" fontSize="subtitle">
-//             Articles
-//           </Heading>
-//           {posts.map((page) => (
-//             <Link
-//               key={page.__resourcePath}
-//               href={formatPath(page.__resourcePath)}
-//             >
-//               <Post as="li" mx="-2rem" p="2rem" mode={mode}>
-//                 <Stack>
-//                   <Heading as="h4" fontSize="title">
-//                     {page.title}
-//                   </Heading>
-//                   <Text>{page.summary}</Text>
-//                   <Text>{page.readingTime.text}</Text>
-//                 </Stack>
-//               </Post>
-//             </Link>
-//           ))}
-//         </Stack>
-//       </Container>
-//     </HomeWrapper>
-//   )
-// }
