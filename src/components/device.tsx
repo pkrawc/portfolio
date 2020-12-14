@@ -5,8 +5,8 @@ import Box from "@components/box"
 function Device({ src, ...props }: any) {
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
-  const x = useTransform(mouseX, [0, 600], [-10, 10])
-  const y = useTransform(mouseY, [0, 400], [5, -5])
+  const x = useTransform(mouseX, [200, 1200], [-10, 10])
+  const y = useTransform(mouseY, [200, 800], [5, -5])
   function handleMouseMove({ clientX, clientY }) {
     mouseX.set(clientX)
     mouseY.set(clientY)
