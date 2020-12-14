@@ -27,7 +27,7 @@ export default function useWindowSize() {
       type: "RESIZE",
       payload: { height: window.innerHeight, width: window.innerWidth },
     })
-  }, [])
+  }, [window])
   useEffect(() => {
     window.addEventListener("resize", handleResize)
     dispatch({

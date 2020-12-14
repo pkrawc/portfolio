@@ -15,14 +15,18 @@ export const getStaticProps: GetStaticProps = async function () {
   const playground = getMdxFile(playgroundFiles)
   return {
     props: {
-      projects: projects.map(({ data, slug }) => ({ ...data, slug })),
+      projects: projects
+        .sort((a, b) => {
+          const getTime = (string) => new Date(string).getTime()
+          return getTime(b.data.endDate) - getTime(a.data.endDate)
+        })
+        .map(({ data, slug }) => ({ ...data, slug })),
       playground,
     },
   }
 }
 
 export default function Homepage({ projects, playground }) {
-  console.log(projects)
   const [activeProject, setActive] = useState(0)
   const { width } = useWindowSize()
   const isMobile = width > 750
@@ -71,9 +75,9 @@ export default function Homepage({ projects, playground }) {
                     height: "1rem",
                     borderRadius: "50%",
                     bg: isActive ? "primary" : "secondary",
-                    transform: isActive ? "scale(1.1)" : "scale(1)",
                     transition: "200ms",
                     outline: "none",
+                    cursor: "pointer",
                   }}
                   onClick={() => setActive(idx)}
                 />
