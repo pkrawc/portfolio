@@ -83,6 +83,38 @@ const text = {
 
 const breakPoints = ["40rem", "60rem", "80rem", "100rem", "120rem"]
 
+declare module "styled-components" {
+  export interface DefaultTheme {
+    breakPoints: string[]
+    fonts: {
+      body: string
+      code: string
+    }
+    fontSizes: {
+      small: string
+      body: string
+      subtitle: string
+      title: string
+      headline: string
+      hero: string
+    }
+    fontWeights: {
+      light: number
+      normal: number
+      bold: number
+      black: number
+    }
+    lineHeights: {
+      small: number
+      body: number
+      heading: number
+    }
+    text: any
+    space: number[]
+    colors: any
+  }
+}
+
 export const theme = {
   breakPoints,
   colors: { ...colors, modes: colorModes },
