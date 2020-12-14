@@ -1,22 +1,8 @@
-import React, { useContext } from "react"
-import styled, { ThemeContext } from "styled-components"
 import Highlight, { Prism } from "prism-react-renderer"
 import theme from "prism-react-renderer/themes/palenight"
 import { LiveProvider, LiveError, LivePreview } from "react-live"
 import { mdx } from "@mdx-js/react"
-
-const Preview = styled.section`
-  border: 0.5rem solid ${({ theme }) => theme.colors.ui_300};
-  padding: 2rem;
-`
-
-const Pre = styled.pre`
-  margin: 2rem 0;
-  overflow: auto;
-  .token:last-of-type {
-    padding-right: 2rem;
-  }
-`
+import Box from "@components/box"
 
 export default function CodeBlock({
   children,
@@ -24,17 +10,24 @@ export default function CodeBlock({
   scope = {},
   ...props
 }) {
-  console.log(children)
-  const language = children?.props?.className.replace(/language-/, "") || "jsx"
-  const code = children?.props?.children.trim()
-  const live = children?.props?.live
+  const language = children.props.className?.replace(/language-/, "") || "jsx"
+  const code = children.props.children.trim()
+  const live = children.props.live
   return (
     <LiveProvider code={code} scope={{ ...scope, mdx }}>
       {live && (
-        <Preview>
+        <Box
+          as="figure"
+          sx={{
+            p: "2rem",
+            borderWidth: "0.5rem",
+            borderStyle: "solid",
+            borderColor: "accent",
+          }}
+        >
           <LiveError />
           <LivePreview />
-        </Preview>
+        </Box>
       )}
       <Highlight
         {...props}
@@ -50,23 +43,29 @@ export default function CodeBlock({
           getLineProps,
           getTokenProps,
         }) => (
-          <Pre
+          <Box
+            as="pre"
             className={className}
             style={{
               ...highlightStyle,
               ...style,
-              padding: "2rem",
-              marginTop: live ? 0 : "2rem",
+            }}
+            sx={{
+              p: "2rem",
+              mt: live ? 0 : "2rem",
+              "& .token:last-of-type": {
+                pr: "2rem",
+              },
             }}
           >
             {tokens.map((line, key) => (
-              <div key={key} {...getLineProps({ line, key })}>
+              <Box key={key} {...getLineProps({ line, key })}>
                 {line.map((token, key) => (
-                  <span key={key} {...getTokenProps({ token, key })} />
+                  <Box as="span" key={key} {...getTokenProps({ token, key })} />
                 ))}
-              </div>
+              </Box>
             ))}
-          </Pre>
+          </Box>
         )}
       </Highlight>
     </LiveProvider>

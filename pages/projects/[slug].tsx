@@ -4,6 +4,7 @@ import { getMdxFile, formatPath } from "@utils"
 import hydrate from "next-mdx-remote/hydrate"
 import renderToString from "next-mdx-remote/render-to-string"
 import Container from "@components/container"
+import MdxComponents from "@components/mdx"
 
 export const getStaticPaths: GetStaticPaths = async function () {
   const paths = glob.sync("./content/projects/*.mdx").map((file) => ({
@@ -28,7 +29,6 @@ export const getStaticProps: GetStaticProps = async function ({
 }
 
 export default function ProjectPage({ mdx, frontMatter }) {
-  console.log(frontMatter)
-  const content = hydrate(mdx)
+  const content = hydrate(mdx, { components: MdxComponents })
   return <Container>{content}</Container>
 }

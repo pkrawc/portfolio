@@ -1,12 +1,12 @@
 import glob from "glob"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { GetStaticProps } from "next"
 import Link from "next/link"
-import { motion, useTransform, useSpring } from "framer-motion"
 import { getMdxFile } from "@utils"
+import useWindowSize from "@hooks/useWindowResize"
 import Container from "@components/container"
 import Box from "@components/box"
-import useWindowSize from "@hooks/useWindowResize"
+import Device from "@components/device"
 
 export const getStaticProps: GetStaticProps = async function () {
   const postFiles = glob.sync("./content/projects/*.mdx")
@@ -108,7 +108,7 @@ export default function Homepage({ projects, playground }) {
           </Box>
         </Box>
       </Container>
-      <Container as="section" sx={{ mt: "4rem", display: "grid", gap: "2rem" }}>
+      <Container as="section" sx={{ my: "4rem", display: "grid", gap: "2rem" }}>
         <Box as="h3" sx={{ fontSize: "subtitle" }}>
           Selected Work
         </Box>
@@ -116,56 +116,6 @@ export default function Homepage({ projects, playground }) {
           <ProjectLink project={project} key={project.slug} />
         ))}
       </Container>
-    </Box>
-  )
-}
-
-function Device({ src, ...props }: any) {
-  const mouseX = useSpring(0)
-  const mouseY = useSpring(0)
-  const x = useTransform(mouseX, [0, 600], [-10, 10])
-  const y = useTransform(mouseY, [0, 400], [5, -5])
-  function handleMouseMove({ clientX, clientY }) {
-    mouseX.set(clientX)
-    mouseY.set(clientY)
-  }
-  useEffect(() => {
-    document.body.addEventListener("mousemove", handleMouseMove)
-    return () => document.body.removeEventListener("mousemove", handleMouseMove)
-  }, [])
-  return (
-    <Box
-      {...props}
-      as={motion.figure}
-      initial={{ scale: 0.8 }}
-      style={{
-        rotateX: y,
-        rotateY: x,
-      }}
-      sx={{
-        position: "relative",
-        borderRadius: "1rem",
-        bg: "accent",
-        paddingTop: "180%",
-        height: 0,
-        width: "100%",
-        overflow: "hidden",
-        transformStyle: "preserve-3d",
-        boxShadow: "0 24px 24px -24px rgba(0,0,0,0.24)",
-      }}
-    >
-      <Box
-        as="iframe"
-        frameBorder="0"
-        src={src}
-        sx={{
-          position: "absolute",
-          left: "0",
-          top: "0",
-          width: "100%",
-          height: "100%",
-        }}
-      />
     </Box>
   )
 }

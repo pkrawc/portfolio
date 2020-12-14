@@ -29,7 +29,7 @@ const colors = {
   ui_900: "#191A19",
 }
 
-colors.modes = {
+const colorModes = {
   dark: {
     font: colors.blue_100,
     secondaryFont: colors.blue_300,
@@ -85,7 +85,7 @@ const breakPoints = ["40rem", "60rem", "80rem", "100rem", "120rem"]
 
 export const theme = {
   breakPoints,
-  colors,
+  colors: { ...colors, modes: colorModes },
   fonts: {
     body: `"Crimson Pro", serif`,
     code: `"Hack", monospace`,
