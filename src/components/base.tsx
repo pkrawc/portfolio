@@ -54,38 +54,11 @@ const lineHeights = {
   small: 2,
 }
 
-const text = {
-  body: {
-    lineHeight: "body",
-    fontSize: "body",
-  },
-  small: {
-    lineHeight: "small",
-    fontSize: "small",
-  },
-  subtitle: {
-    lineHeight: "heading",
-    fontSize: "subtitle",
-  },
-  title: {
-    lineHeight: "heading",
-    fontSize: "title",
-  },
-  headline: {
-    lineHeight: "heading",
-    fontSize: "headline",
-  },
-  hero: {
-    lineHeight: "heading",
-    fontSize: "hero",
-  },
-}
-
-const breakPoints = ["40rem", "60rem", "80rem", "100rem", "120rem"]
+const breakpoints = ["480px", "640px", "800px", "960px", "1120px", "1280px"]
 
 declare module "styled-components" {
   export interface DefaultTheme {
-    breakPoints: string[]
+    breakpoints: string[]
     fonts: {
       body: string
       code: string
@@ -116,7 +89,7 @@ declare module "styled-components" {
 }
 
 export const theme = {
-  breakPoints,
+  breakpoints,
   colors: { ...colors, modes: colorModes },
   fonts: {
     body: `"Crimson Pro", serif`,
@@ -130,7 +103,37 @@ export const theme = {
     black: 800,
   },
   lineHeights,
-  text,
+  text: {
+    small: {
+      lineHeight: "small",
+      fontSize: "small",
+    },
+    body: {
+      lineHeight: "body",
+      fontSize: "body",
+    },
+    emphasis: {
+      lineHeight: "body",
+      fontSize: "body",
+      fontWeight: "black",
+    },
+    subtitle: {
+      lineHeight: "heading",
+      fontSize: "subtitle",
+    },
+    title: {
+      lineHeight: "heading",
+      fontSize: "title",
+    },
+    headline: {
+      lineHeight: "heading",
+      fontSize: "headline",
+    },
+    hero: {
+      lineHeight: "heading",
+      fontSize: "hero",
+    },
+  },
   space: [0, 8, 16, 24, 32, 40, 48, 56, 64, 72],
 }
 

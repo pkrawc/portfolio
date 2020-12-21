@@ -93,7 +93,7 @@ export default function Homepage({ projects, playground }) {
           }}
         >
           <Box as="h1">Dreadful Design</Box>
-          <Box as="h2" sx={{ fontSize: "subtitle" }}>
+          <Box as="h2" sx={{ text: "subtitle" }}>
             Experiences that are <s>un</s>forgettable.
           </Box>
           <Box
@@ -113,8 +113,8 @@ export default function Homepage({ projects, playground }) {
         </Box>
       </Container>
       <Container as="section" sx={{ my: "4rem", display: "grid", gap: "2rem" }}>
-        <Box as="h3" sx={{ fontSize: "subtitle" }}>
-          Selected Work
+        <Box as="h3" sx={{ text: "subtitle" }}>
+          Selected Projects
         </Box>
         {projects.map((project, idx) => (
           <ProjectLink project={project} key={project.slug} />
@@ -146,7 +146,7 @@ function ProjectLink({ project }: ProjectLinkProps) {
           },
         }}
       >
-        <Box as="h3" sx={{ fontSize: "title" }}>
+        <Box as="h3" sx={{ text: ["subtitle", "title"] }}>
           {project.title}
         </Box>
         <Box as="p" sx={{ mt: "1rem" }}>
