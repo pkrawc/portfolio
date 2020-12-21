@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment } from "react"
+import React, { useEffect, useState, Fragment, useReducer } from "react"
 import { AppProps } from "next/app"
 import { useRouter } from "next/router"
 import analytics from "react-ga"
@@ -12,20 +12,47 @@ import Container from "@components/container"
 import Box from "@components/box"
 import seo from "../seo.config"
 
+type ColorModeType = {
+  systemDefault?: boolean
+  modes?: string[]
+}
+
+function useColorMode({
+  systemDefault = true,
+  modes = ["light", "dark"],
+}: ColorModeType = {}) {
+  const reducer = (state, newState) => ({ ...state, ...newState })
+  const [modeState, set] = useReducer(reducer, {
+    modes,
+    currentMode: modes[0],
+    loaded: false,
+  })
+  useEffect(() => {
+    const { matches: darkMode } = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    )
+    if (systemDefault && darkMode) set({ currentMode: "dark" })
+    set({ loaded: true })
+  }, [])
+  return [modeState, set]
+}
+
+function getTheme(mode, baseTheme) {
+  return {
+    ...baseTheme,
+    colors: { ...baseTheme.colors, ...baseTheme.colors.modes[mode] },
+  }
+}
+
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
-  const modes = ["light", "dark"]
-  const [mode, setMode] = useState(modes[1])
-  const [loaded, setLoaded] = useState(false)
-  const theme = getTheme(mode)
+  const [{ currentMode, loaded, modes }, setMode] = useColorMode()
+  const theme = getTheme(currentMode, baseTheme)
   function toggleColorMode() {
-    setMode((mode) => (mode === "light" ? modes[1] : modes[0]))
-  }
-  function getTheme(mode) {
-    return {
-      ...baseTheme,
-      colors: { ...baseTheme.colors, ...baseTheme.colors.modes[mode] },
-    }
+    setMode({
+      currentMode:
+        modes[(modes.findIndex((el) => el === currentMode) + 1) % modes.length],
+    })
   }
   function handleHistoryChange(url) {
     analytics.pageview(url)
@@ -33,11 +60,6 @@ export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
     analytics.initialize("UA-112946294-4")
     router.events.on("beforeHistoryChange", handleHistoryChange)
-    const { matches: prefersDarkMode } = window.matchMedia(
-      "(prefers-color-scheme: dark)"
-    )
-    setMode(prefersDarkMode ? modes[1] : modes[0])
-    setLoaded(true)
   }, [])
   return (
     <ThemeProvider theme={theme}>
@@ -70,10 +92,10 @@ export default function App({ Component, pageProps }: AppProps) {
                 "&:focus": { boxShadow: "inset 0 0 0 2px #fff" },
               }}
             >
-              {mode === "light" ? <Sun /> : <Moon />}
+              {currentMode === "light" ? <Sun /> : <Moon />}
             </Box>
           </Container>
-          <Component {...pageProps} mode={mode} />
+          <Component {...pageProps} mode={currentMode} />
         </Fragment>
       )}
     </ThemeProvider>

@@ -30,5 +30,5 @@ export const getStaticProps: GetStaticProps = async function ({
 
 export default function ProjectPage({ mdx, frontMatter }) {
   const content = hydrate(mdx, { components: MdxComponents })
-  return <Container>{content}</Container>
+  return <Container sx={{ my: "4rem" }}>{content}</Container>
 }

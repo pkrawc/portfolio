@@ -1,23 +1,29 @@
-import styled from "styled-components"
 import Box from "@components/box"
-import { Heading, Text } from "@components/typography"
 import CodeBlock from "@components/code-block"
 
 export default {
   h1: (props) => (
-    <Box {...props} as="h1" sx={{ text: ["hero", "heading"], my: "3rem" }} />
+    <Box
+      {...props}
+      as="h1"
+      sx={{
+        text: ["title", "headline", "hero"],
+        my: "3rem",
+      }}
+    />
   ),
   h2: (props) => (
     <Box
       {...props}
       as="h2"
-      sx={{ my: "2rem", text: ["subtitle", "heading"] }}
+      sx={{ my: "2rem", text: ["emphasis", "subtitle", "headline"] }}
     />
   ),
   h3: (props) => (
-    <Heading {...props} as="h3" mt={3} fontSize={["body", "subtitle"]} />
+    <Box {...props} as="h3" sx={{ mt: "3rem", text: ["body", "subtitle"] }} />
   ),
-  p: (props) => <Text {...props} mt={2} />,
+  p: (props) => <Box {...props} sx={{ mt: "2rem" }} />,
+  a: (props) => <Box {...props} as="a" sx={{ fontWeight: "inherit" }} />,
   inlineCode: (props) => (
     <Box
       {...props}
@@ -34,6 +40,6 @@ export default {
     />
   ),
   pre: CodeBlock,
-  img: (props) => <img {...props} style={{ maxWidth: "100%" }} />,
-  strong: (props) => <strong {...props} style={{ fontWeight: "800" }} />,
+  img: (props) => <Box as="img" {...props} sx={{ maxWidth: "100%" }} />,
+  strong: (props) => <Box as="strong" {...props} sx={{ fontWeight: "800" }} />,
 }
